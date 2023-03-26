@@ -11,8 +11,8 @@
 
         if(!empty($user_name) && !empty($password) && !is_numeric($user_name)){
             //Save to database
-            $user_id = random_num(20);
-            $query = "INSERT INTO users (UserID,UserName,Password,IsActive) VALUES ('$user_id', '$user_name', '$password', '1')";
+            $user_id = random_num(19);
+            $query = "INSERT INTO users (UserID,UserName,Password,IsActive) VALUES ('$user_id', '$user_name', '$password', 1)";
             mysqli_query($con, $query);
 
             header("Location: login.php");
