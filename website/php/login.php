@@ -27,9 +27,9 @@
                 }
             }
 
-            echo "Wrong username or password!";
+            echo '<p style="color: red; text-align: center;">Wrong username or password!</p>';
         }else{
-            echo "Wrong username or password!";
+            echo '<p style="color: red; text-align: center;">Wrong username or password!</p>';
         }
     }
 ?>
