@@ -17,6 +17,6 @@
     <h1>This is the home page</h1>
 
     <br>
-    Hello, <?php echo $user_data['user_name']; ?>
+    Hello, <?php echo $user_data['UserName']; ?>
 </body>
 </html>

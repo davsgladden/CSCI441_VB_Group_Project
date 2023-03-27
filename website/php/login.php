@@ -1,6 +1,5 @@
 <?php
  session_start();
-
  include("connection.php");
  include("functions.php");
 
@@ -12,15 +11,15 @@
         if(!empty($user_name) && !empty($password) && !is_numeric($user_name)){
             //Read from database
     
-            $query = "SELECT * FROM users WHERE user_name = '$user_name' LIMIT 1";
+            $query = "SELECT * FROM Users WHERE UserName = '$user_name' LIMIT 1";
             $result = mysqli_query($con,$query);
 
             if($result){
                 if($result && mysqli_num_rows($result) > 0){
                     $user_data = mysqli_fetch_assoc($result);
 
-                    if($user_data['password'] === $password){
-                        $_SESSION['user_id'] = $user_data['user_id'];
+                    if($user_data['Password'] === $password){
+                        $_SESSION['user_id'] = $user_data['UserID'];
                         header("Location: index.php");
                         die;
                     }
