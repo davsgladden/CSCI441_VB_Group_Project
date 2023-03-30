@@ -6,6 +6,7 @@
     include("controller/systemController.php");
 
     $user_data = check_login($con);
+    //todo: remove hardcoded function call
     $port = fetchPortfolio($con, 2);
 ?>
 <!DOCTYPE html>
@@ -25,6 +26,7 @@
     <br>
     <p>Hello, <?php echo $user_data['UserName']; ?></p>
 
+        <!--todo: displayed for testing. Revisit for actual display -->
         <table>
         <?php
         echo '<th>CommodityID</th>
