@@ -6,8 +6,9 @@
     include("controller/systemController.php");
 
     $user_data = check_login($con);
-    //todo: remove hardcoded function call
-    $port = fetchPortfolio($con, 2);
+    $id = $user_data['ID'];
+    $portfolio = getPortfolioInfo($con, $id);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,27 +20,61 @@
         padding: 15px;
         font-size: 20px;
     }
+
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 65%;
+    }
+
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    .center {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
 </style>
 <body>
     <?php include_once("navbar.php");?>
 
     <br>
     <p>Hello, <?php echo $user_data['UserName']; ?></p>
-
+    <p>Current portfolio infomation for your account is:</p>
         <!--todo: displayed for testing. Revisit for actual display -->
-        <table>
+       <div>
+        <table class="center">
         <?php
-        echo '<th>CommodityID</th>
-              <th>Amount</th>';
-        foreach($port as $portfolio){
+        echo '<th>Symbol</th>
+              <th>CommodityName</th>
+              <th>Amount</th>
+              <th>Purchase Avg</th>
+              <th>TotalValue</th>';
+        if ($portfolio > 1)
+        foreach($portfolio as $rows){
             echo '
             <tr>
-                <td>'.$portfolio['CommodityID'].'</td>
-                <td>'.$portfolio['Amount'].'</td>
+                <td>'.$rows['Symbol'].'</td>
+                <td>'.$rows['CommodityName'].'</td>
+                <td>'.$rows['Amount'].'</td>
+                <td>'.$rows['PurchaseAvg'].'</td>
+                <td>'.$rows['TotalValue'].'</td>
             </tr>
             ';
         }
         ?>
         </table>
+            <p>
+            <?php $total = getAccountTotal($con, $portfolio, $id);
+                echo "Total value in account is: $",  number_format($total, 2); ?>
+            </p>
+        </div>
 </body>
 </html>
