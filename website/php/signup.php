@@ -18,7 +18,7 @@
             header("Location: login.php");
             die;
         }else{
-            echo "Please enter valid information!";
+            echo '<p style="color: red; text-align: center;">Please enter valid information!</p>';
         }
     }
 ?>
@@ -47,7 +47,7 @@
             text-align: center;
         }
         .header{
-            background-color: #4f97e0;
+            background-color: #549bf7;
             margin: auto;
             width: 500px;
             height: 50px;

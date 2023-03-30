@@ -3,7 +3,6 @@
 
     include("connection.php");
     include("functions.php");
-    include("controller/systemController.php");
 
     $user_data = check_login($con);
 
@@ -11,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home</title>
+    <title>Newsfeed</title>
 </head>
 <style>
     p{
@@ -23,6 +22,7 @@
     <?php include_once("navbar.php");?>
 
     <br>
-    <p>Hello, <?php echo $user_data['UserName']; ?></p>
+    <p>Hello, <?php echo $user_data['UserName']; ?>.<br>
+        This is the newsfeed page.</p>
 </body>
 </html>
