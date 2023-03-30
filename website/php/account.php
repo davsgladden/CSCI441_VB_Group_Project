@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home</title>
+    <title>Account</title>
 </head>
 <style>
     p{
@@ -22,6 +22,7 @@
     <?php include_once("navbar.php");?>
 
     <br>
-    <p>Hello, <?php echo $user_data['UserName']; ?></p>
+    <p>Hello, <?php echo $user_data['UserName']; ?>.<br>
+        This is the account page.</p>
 </body>
 </html>

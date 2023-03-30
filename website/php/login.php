@@ -26,9 +26,9 @@
                 }
             }
 
-            echo "Wrong username or password!";
+            echo '<p style="color: red; text-align: center;">Wrong username or password!</p>';
         }else{
-            echo "Wrong username or password!";
+            echo '<p style="color: red; text-align: center;">Wrong username or password!</p>';
         }
     }
 ?>
@@ -57,7 +57,7 @@
             text-align: center;
         }
         .header{
-            background-color: #4f97e0;
+            background-color: #549bf7;
             margin: auto;
             width: 500px;
             height: 50px;
