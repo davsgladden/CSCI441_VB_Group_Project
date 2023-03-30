@@ -8,23 +8,36 @@ class Commodity {
  public $LastUpdated;
 
   // set and get methods
+  function get_CommodityID() {
+    return $this->CommodityID;
+  }
+
   function set_Symbol($Symbol) {
-    $this->name = $Symbol;
+    $this->Symbol = $Symbol;
   }
   function get_Symbol() {
     return $this->Symbol;
   }
+
   function set_CommodityName($CommodityName) {
-    $this->name = $CommodityName;
+    $this->CommodityName = $CommodityName;
   }
   function get_CommodityName() {
     return $this->CommodityName;
   }
+
   function set_CurrentPrice($CurrentPrice) {
     $this->CurrentPrice = $CurrentPrice;
   }
   function get_CurrentPrice() {
     return $this->CurrentPrice;
+  }
+
+  function set_LastUpdated($LastUpdated) {
+    $this->LastUpdated = $LastUpdated;
+  }
+  function get_LastUpdated() {
+    return $this->LastUpdated;
   }
 }
 
