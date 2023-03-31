@@ -58,7 +58,7 @@ class TrainingRegimen {
 function fetchTrainingRegimen($con, $filter = "")
 {
     try {
-        $query = "SELECT * FROM TtrainingRegimen";
+        $query = "SELECT * FROM TrainingRegimen";
         if ($filter != "") {
             $query .= sprintf(" WHERE %s", $filter);
         }
