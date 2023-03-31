@@ -30,6 +30,7 @@
     function getPortfolioInfo($con,$id){
         try {
             $query = "Select UserID, Symbol, CommodityName, Amount, PurchaseAvg,
+                        cast(CurrentPrice as decimal(10,2)) as CurrentPrice,
                         cast(Amount * CurrentPrice as decimal(10,2)) as TotalValue
                       From portfolio p
                         join commodity c
@@ -49,8 +50,9 @@
     function getAccountTotal($con, $portfolio, $id) {
     try {
         //get current user data for available funds
-        $users = fetchUsers($con, "ID = '$id'");
-        $funds = $users[0]['AvailableFunds'];
+        $users = new users();
+        $users = fetchUser($con, $id);
+        $funds = $users->get_AvailableFunds();//[0]['AvailableFunds'];
 
         //aggregate total value and return sum with available funds
         if ($portfolio < 1) return null;
