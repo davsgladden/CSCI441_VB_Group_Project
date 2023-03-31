@@ -56,6 +56,7 @@
               <th>CommodityName</th>
               <th>Amount</th>
               <th>Purchase Avg</th>
+              <th>Current Price</th>
               <th>TotalValue</th>';
         if ($portfolio > 1)
         foreach($portfolio as $rows){
@@ -65,6 +66,7 @@
                 <td>'.$rows['CommodityName'].'</td>
                 <td>'.$rows['Amount'].'</td>
                 <td>'.$rows['PurchaseAvg'].'</td>
+                <td>'.$rows['CurrentPrice'].'</td>
                 <td>'.$rows['TotalValue'].'</td>
             </tr>
             ';
@@ -73,6 +75,8 @@
         </table>
             <p>
             <?php $total = getAccountTotal($con, $portfolio, $id);
+                echo "Available funds in your account: $", number_format($user_data['AvailableFunds'],2);
+                echo '<br>';
                 echo "Total value in account is: $",  number_format($total, 2); ?>
             </p>
         </div>

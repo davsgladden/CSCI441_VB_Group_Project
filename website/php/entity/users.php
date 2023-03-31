@@ -12,10 +12,16 @@ class Users {
  public $LastLogin;
 
   // set and get methods
+  function set_ID($id) {
+    $this->ID = $id;
+  }
   function get_ID() {
     return $this->ID;
   }
 
+  function set_UserID($UserID) {
+    $this->UserID = $UserID;
+  }
   function get_UserID() {
     return $this->UserID;
   }
@@ -70,16 +76,23 @@ class Users {
   }
 }
 
-  function fetchUsers($con, $filter = "")
+  function fetchUser($con, $id)
   {
     try {
-        $query = "SELECT * FROM Users";
-        if ($filter != "") {
-            $query .= sprintf(" WHERE %s", $filter);
-        }
+        $query = "SELECT * FROM Users Where ID = '$id' Limit 1";
         $result = mysqli_query($con, $query);
         if($result && mysqli_num_rows($result) > 0){
-            $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            $res = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                $users = new users();
+                $users->set_id($res[0]['ID']);
+                $users->set_UserID($res[0]['UserID']);
+                $users->set_UserName($res[0]['UserName']);
+                $users->set_Password($res[0]['Password']);
+                $users->set_UserTypeID($res[0]['UserTypeID']);
+                $users->set_AvailableFunds($res[0]['AvailableFunds']);
+                $users->set_IsActive($res[0]['IsActive']);
+                $users->set_DateCreated($res[0]['DateCreated']);
+                $users->set_LastLogin($res[0]['LastLogin']);
             return $users;
         }
     } catch (Exception $e) {
