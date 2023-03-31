@@ -5,9 +5,8 @@
     include("functions.php");
     include("controller/systemController.php");
 
-    $user_data = check_login($con);
-    $id = $user_data['ID'];
-    $portfolio = getPortfolioInfo($con, $id);
+    $user_data = fetchUser($con, "UserID = $_SESSION[user_id]");
+    $portfolio = getPortfolioInfo($con, $user_data->get_ID());
 
 ?>
 <!DOCTYPE html>
@@ -46,7 +45,7 @@
     <?php include_once("navbar.php");?>
 
     <br>
-    <p>Hello, <?php echo $user_data['UserName']; ?></p>
+    <p>Hello, <?php echo $user_data->get_UserName(); ?></p>
     <p>Current portfolio infomation for your account is:</p>
         <!--todo: displayed for testing. Revisit for actual display -->
        <div>
@@ -74,10 +73,11 @@
         ?>
         </table>
             <p>
-            <?php $total = getAccountTotal($con, $portfolio, $id);
-                echo "Available funds in your account: $", number_format($user_data['AvailableFunds'],2);
+            <?php $total = getAccountTotal($con, $portfolio, $user_data->get_id());
+                echo "Available funds in your account: $", number_format($user_data->get_AvailableFunds(),2);
                 echo '<br>';
-                echo "Total value in account is: $",  number_format($total, 2); ?>
+                echo "Total value in account is: $",  number_format($total, 2);
+                ?>
             </p>
         </div>
 </body>

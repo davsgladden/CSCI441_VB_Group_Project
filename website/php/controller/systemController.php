@@ -10,22 +10,6 @@
     include("entity/users.php");
     include("entity/userType.php");
 
-    //todo: reivew use case if needed
-    function getID($con, $user_id) {
-        try {
-            $user = new users();
-            $query = "Select ID from Users Where UserID = '$user_id'";
-            $result = mysqli_query($con, $query);
-
-            if($result && mysqli_num_rows($result) > 0){
-                $user = mysqli_fetch_all($result, MYSQLI_ASSOC);
-                return $user[0]['ID'];
-            }
-        } catch (Exception $e) {
-          throw $e;
-        }
-    }
-
     //Pull portfolio data with total value
     function getPortfolioInfo($con,$id){
         try {
@@ -38,16 +22,18 @@
                       WHERE UserID = '$id'";
             $result = mysqli_query($con, $query);
             if($result && mysqli_num_rows($result) > 0){
-                $portfolio = mysqli_fetch_all($result, MYSQLI_ASSOC);
-                return $portfolio;
+                return mysqli_fetch_all($result, MYSQLI_ASSOC);
             }
         } catch (Exception $e) {
           throw $e;
         }
     }
 
-    //pull available funds plus total value aggregate
-    function getAccountTotal($con, $portfolio, $id) {
+/**
+ * pull available funds plus total value aggregate
+ * @throws Exception
+ */
+function getAccountTotal($con, $portfolio, $id) {
     try {
         //get current user data for available funds
         $users = new users();
