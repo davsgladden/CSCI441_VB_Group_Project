@@ -33,13 +33,8 @@
  * pull available funds plus total value aggregate
  * @throws Exception
  */
-function getAccountTotal($con, $portfolio, $id) {
+function getAccountTotal($con, $portfolio, $funds) {
     try {
-        //get current user data for available funds
-        $users = new users();
-        $users = fetchUser($con, $id);
-        $funds = $users->get_AvailableFunds();//[0]['AvailableFunds'];
-
         //aggregate total value and return sum with available funds
         if ($portfolio < 1) return null;
         $AmountTotal = 0;

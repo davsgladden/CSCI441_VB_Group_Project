@@ -84,19 +84,39 @@ class Users {
             $query .= sprintf(" WHERE %s", $filter);
         }
         $result = mysqli_query($con, $query);
-        if($result && mysqli_num_rows($result) > 0){
-            $res = mysqli_fetch_all($result, MYSQLI_ASSOC);
-                $user = new users();
-                $user->set_id($res[0]['ID']);
-                $user->set_UserID($res[0]['UserID']);
-                $user->set_UserName($res[0]['UserName']);
-                $user->set_Password($res[0]['Password']);
-                $user->set_UserTypeID($res[0]['UserTypeID']);
-                $user->set_AvailableFunds($res[0]['AvailableFunds']);
-                $user->set_IsActive($res[0]['IsActive']);
-                $user->set_DateCreated($res[0]['DateCreated']);
-                $user->set_LastLogin($res[0]['LastLogin']);
+        // if 1 user return user object
+        if ($result && mysqli_num_rows($result) > 0 && mysqli_num_rows($result) < 2){
+            $res = mysqli_fetch_array($result, MYSQLI_ASSOC);
+            $user = new users();
+            $user->set_id($res['ID']);
+            $user->set_UserID($res['UserID']);
+            $user->set_UserName($res['UserName']);
+            $user->set_Password($res['Password']);
+            $user->set_UserTypeID($res['UserTypeID']);
+            $user->set_AvailableFunds($res['AvailableFunds']);
+            $user->set_IsActive($res['IsActive']);
+            $user->set_DateCreated($res['DateCreated']);
+            $user->set_LastLogin($res['LastLogin']);
+
             return $user;
+        }
+        // if more than 1 user return array of users
+        else {
+            $users[] = new users();
+            while ($res = mysqli_fetch_array($result)) {
+                $user = new users();
+                $user->set_id($res['ID']);
+                $user->set_UserID($res['UserID']);
+                $user->set_UserName($res['UserName']);
+                $user->set_Password($res['Password']);
+                $user->set_UserTypeID($res['UserTypeID']);
+                $user->set_AvailableFunds($res['AvailableFunds']);
+                $user->set_IsActive($res['IsActive']);
+                $user->set_DateCreated($res['DateCreated']);
+                $user->set_LastLogin($res['LastLogin']);
+                $users[] = $user;
+            }
+            return $users;
         }
     } catch (Exception $e) {
       throw $e;
