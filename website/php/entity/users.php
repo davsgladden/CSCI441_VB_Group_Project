@@ -76,10 +76,13 @@ class Users {
   }
 }
 
-  function fetchUser($con, $id)
+  function fetchUser($con, $filter)
   {
     try {
-        $query = "SELECT * FROM Users Where ID = '$id' Limit 1";
+        $query = "SELECT * FROM Users";
+        if ($filter != "") {
+            $query .= sprintf(" WHERE %s", $filter);
+        }
         $result = mysqli_query($con, $query);
         if($result && mysqli_num_rows($result) > 0){
             $res = mysqli_fetch_all($result, MYSQLI_ASSOC);
