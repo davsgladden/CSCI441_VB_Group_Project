@@ -83,17 +83,17 @@ class Users {
         $result = mysqli_query($con, $query);
         if($result && mysqli_num_rows($result) > 0){
             $res = mysqli_fetch_all($result, MYSQLI_ASSOC);
-                $users = new users();
-                $users->set_id($res[0]['ID']);
-                $users->set_UserID($res[0]['UserID']);
-                $users->set_UserName($res[0]['UserName']);
-                $users->set_Password($res[0]['Password']);
-                $users->set_UserTypeID($res[0]['UserTypeID']);
-                $users->set_AvailableFunds($res[0]['AvailableFunds']);
-                $users->set_IsActive($res[0]['IsActive']);
-                $users->set_DateCreated($res[0]['DateCreated']);
-                $users->set_LastLogin($res[0]['LastLogin']);
-            return $users;
+                $user = new users();
+                $user->set_id($res[0]['ID']);
+                $user->set_UserID($res[0]['UserID']);
+                $user->set_UserName($res[0]['UserName']);
+                $user->set_Password($res[0]['Password']);
+                $user->set_UserTypeID($res[0]['UserTypeID']);
+                $user->set_AvailableFunds($res[0]['AvailableFunds']);
+                $user->set_IsActive($res[0]['IsActive']);
+                $user->set_DateCreated($res[0]['DateCreated']);
+                $user->set_LastLogin($res[0]['LastLogin']);
+            return $user;
         }
     } catch (Exception $e) {
       throw $e;
