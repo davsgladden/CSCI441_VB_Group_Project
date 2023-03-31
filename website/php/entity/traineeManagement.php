@@ -9,6 +9,9 @@ class TraineeManagement {
  public $IsActive;
 
   // set and get methods
+  function set_TraineeManagementID($TraineeManagementID) {
+    $this->TraineeManagementID = $TraineeManagementID;
+  }
   function get_TraineeManagementID() {
     return $this->TraineeManagementID;
   }
@@ -49,20 +52,48 @@ class TraineeManagement {
   }
 }
 
-  function fetchTraineeManagement($con, $filter = "")
-  {
+/**
+ * @throws Exception
+ */
+function fetchTraineeManagement($con, $filter = "")
+{
     try {
         $query = "SELECT * FROM TraineeManagement";
         if ($filter != "") {
             $query .= sprintf(" WHERE %s", $filter);
         }
         $result = mysqli_query($con, $query);
-        if($result && mysqli_num_rows($result) > 0){
-            $traineeManagement = mysqli_fetch_all($result, MYSQLI_ASSOC);
-            return $traineeManagement;
+        // if 1 row return TraineeManagement object
+        if ($result && mysqli_num_rows($result) > 0 && mysqli_num_rows($result) < 2){
+            $res = mysqli_fetch_array($result, MYSQLI_ASSOC);
+            return getTraineeManagement($res);
+        }
+        // if more than 1 user return array of TraineeManagement
+        else {
+            $traineeManagementArr[] = array();
+            while ($res = mysqli_fetch_array($result)) {
+                $traineeManagement = getTraineeManagement($res);
+                $traineeManagementArr[] = $traineeManagement;
+            }
+            return $traineeManagementArr;
         }
     } catch (Exception $e) {
-      throw $e;
+        throw $e;
     }
-  }
-?>
+}
+
+/**
+ * @param array $res
+ * @return TraineeManagement
+ */
+function getTraineeManagement(array $res): TraineeManagement
+{
+    $traineeManagement = new TraineeManagement();
+    $traineeManagement->set_TraineeManagementID($res['TraineeManagementID']);
+    $traineeManagement->set_ManagerUserID($res['ManagerUserID']);
+    $traineeManagement->set_TraineeUserID($res['TraineeUserID']);
+    $traineeManagement->set_DateCreated($res['DateCreated']);
+    $traineeManagement->set_LastUpdated($res['LastUpdated']);
+    $traineeManagement->set_IsActive($res['IsActive']);
+    return $traineeManagement;
+}

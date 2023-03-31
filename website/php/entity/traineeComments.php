@@ -10,6 +10,9 @@ class TraineeComments {
  public $LastUpdated;
 
   // set and get methods
+  function set_TraineeCommentID($TraineeCommentID) {
+    $this->TraineeCommentID = $TraineeCommentID;
+  }
   function get_TraineeCommentID() {
     return $this->TraineeCommentID;
   }
@@ -57,20 +60,49 @@ class TraineeComments {
   }
 }
 
-  function fetchTraineeComments($con, $filter = "")
-  {
+/**
+ * @throws Exception
+ */
+function fetchTraineeComments($con, $filter = "")
+{
     try {
         $query = "SELECT * FROM TraineeComments";
         if ($filter != "") {
             $query .= sprintf(" WHERE %s", $filter);
         }
         $result = mysqli_query($con, $query);
-        if($result && mysqli_num_rows($result) > 0){
-            $traineeComments = mysqli_fetch_all($result, MYSQLI_ASSOC);
-            return $traineeComments;
+        // if 1 row return TraineeComments object
+        if ($result && mysqli_num_rows($result) > 0 && mysqli_num_rows($result) < 2){
+            $res = mysqli_fetch_array($result, MYSQLI_ASSOC);
+            return getTraineeComments($res);
+        }
+        // if more than 1 user return array of TraineeComments
+        else {
+            $traineeCommentsArr[] = array();
+            while ($res = mysqli_fetch_array($result)) {
+                $traineeComments = getTraineeComments($res);
+                $traineeCommentsArr[] = $traineeComments;
+            }
+            return $traineeCommentsArr;
         }
     } catch (Exception $e) {
-      throw $e;
+        throw $e;
     }
-  }
-?>
+}
+
+/**
+ * @param array $res
+ * @return TraineeComments
+ */
+function getTraineeComments(array $res): TraineeComments
+{
+    $traineeComments = new TraineeComments();
+    $traineeComments->set_TraineeCommentID($res['TraineeCommentID']);
+    $traineeComments->set_ManagerUserID($res['ManagerUserID']);
+    $traineeComments->set_TraineeUserID($res['TraineeUserID']);
+    $traineeComments->set_TransactionHistoryID($res['TransactionHistoryID']);
+    $traineeComments->set_Comment($res['Comment']);
+    $traineeComments->set_DateCreated($res['DateCreated']);
+    $traineeComments->set_LastUpdated($res['LastUpdated']);
+    return $traineeComments;
+}

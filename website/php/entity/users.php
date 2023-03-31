@@ -76,7 +76,10 @@ class Users {
   }
 }
 
-  function fetchUser($con, $filter)
+/**
+ * @throws Exception
+ */
+function fetchUser($con, $filter = "")
   {
     try {
         $query = "SELECT * FROM Users";
@@ -87,39 +90,38 @@ class Users {
         // if 1 user return user object
         if ($result && mysqli_num_rows($result) > 0 && mysqli_num_rows($result) < 2){
             $res = mysqli_fetch_array($result, MYSQLI_ASSOC);
-            $user = new users();
-            $user->set_id($res['ID']);
-            $user->set_UserID($res['UserID']);
-            $user->set_UserName($res['UserName']);
-            $user->set_Password($res['Password']);
-            $user->set_UserTypeID($res['UserTypeID']);
-            $user->set_AvailableFunds($res['AvailableFunds']);
-            $user->set_IsActive($res['IsActive']);
-            $user->set_DateCreated($res['DateCreated']);
-            $user->set_LastLogin($res['LastLogin']);
-
-            return $user;
+            return getUsers($res);
         }
         // if more than 1 user return array of users
         else {
-            $users[] = new users();
+            $userArr[] = array();
             while ($res = mysqli_fetch_array($result)) {
-                $user = new users();
-                $user->set_id($res['ID']);
-                $user->set_UserID($res['UserID']);
-                $user->set_UserName($res['UserName']);
-                $user->set_Password($res['Password']);
-                $user->set_UserTypeID($res['UserTypeID']);
-                $user->set_AvailableFunds($res['AvailableFunds']);
-                $user->set_IsActive($res['IsActive']);
-                $user->set_DateCreated($res['DateCreated']);
-                $user->set_LastLogin($res['LastLogin']);
-                $users[] = $user;
+                $user = getUsers($res);
+                $userArr[] = $user;
             }
-            return $users;
+            return $userArr;
         }
     } catch (Exception $e) {
       throw $e;
     }
   }
-?>
+
+/**
+ * @param array $res
+ * @return Users
+ */
+function getUsers(array $res): Users
+{
+    $user = new users();
+    $user->set_id($res['ID']);
+    $user->set_UserID($res['UserID']);
+    $user->set_UserName($res['UserName']);
+    $user->set_Password($res['Password']);
+    $user->set_UserTypeID($res['UserTypeID']);
+    $user->set_AvailableFunds($res['AvailableFunds']);
+    $user->set_IsActive($res['IsActive']);
+    $user->set_DateCreated($res['DateCreated']);
+    $user->set_LastLogin($res['LastLogin']);
+    return $user;
+}
+

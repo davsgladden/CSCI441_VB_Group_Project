@@ -11,6 +11,9 @@ class TransactionHistory {
 
 
   // set and get methods
+  function set_TransactionHistoryID($TransactionHistoryID) {
+    $this->TransactionHistoryID = $TransactionHistoryID;
+  }
   function get_TransactionHistoryID() {
     return $this->TransactionHistoryID;
   }
@@ -58,20 +61,49 @@ class TransactionHistory {
   }
 }
 
-  function fetchTransactionHistory($con, $filter = "")
-  {
+/**
+ * @throws Exception
+ */
+function fetchTransactionHistory($con, $filter = "")
+{
     try {
         $query = "SELECT * FROM TransactionHistory";
         if ($filter != "") {
             $query .= sprintf(" WHERE %s", $filter);
         }
         $result = mysqli_query($con, $query);
-        if($result && mysqli_num_rows($result) > 0){
-            $transactionHistoryID = mysqli_fetch_all($result, MYSQLI_ASSOC);
-            return $transactionHistoryID;
+        // if 1 row return TransactionHistory object
+        if ($result && mysqli_num_rows($result) > 0 && mysqli_num_rows($result) < 2){
+            $res = mysqli_fetch_array($result, MYSQLI_ASSOC);
+            return getTransactionHistory($res);
+        }
+        // if more than 1 row return array of TransactionHistory
+        else {
+            $transactionHistoryArr[] = array();
+            while ($res = mysqli_fetch_array($result)) {
+                $transactionHistory = getTransactionHistory($res);
+                $transactionHistoryArr[] = $transactionHistory;
+            }
+            return $transactionHistoryArr;
         }
     } catch (Exception $e) {
-      throw $e;
+        throw $e;
     }
-  }
-?>
+}
+
+/**
+ * @param array $res
+ * @return TransactionHistory
+ */
+function getTransactionHistory(array $res): TransactionHistory
+{
+    $transactionHistory = new TransactionHistory();
+    $transactionHistory->set_TransactionHistoryID($res['TransactionHistoryID']);
+    $transactionHistory->set_UserID($res['UserID']);
+    $transactionHistory->set_CommodityID($res['CommodityID']);
+    $transactionHistory->set_Amount($res['Amount']);
+    $transactionHistory->set_Price($res['Price']);
+    $transactionHistory->set_TransactionPrice($res['TransactionPrice']);
+    $transactionHistory->set_TransactionDate($res['TransactionDate']);
+    return $transactionHistory;
+}
