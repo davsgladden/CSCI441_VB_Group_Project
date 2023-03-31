@@ -9,6 +9,9 @@ class PerformanceFeedback {
  public $LastUpdated;
 
   // set and get methods
+  function set_PerformanceFeedbackID($PerformanceFeedbackID) {
+    $this->PerformanceFeedbackID = $PerformanceFeedbackID;
+  }
   function get_PerformanceFeedbackID() {
     return $this->PerformanceFeedbackID;
   }
@@ -49,20 +52,48 @@ class PerformanceFeedback {
   }
 }
 
-  function fetchPerformanceFeedback($con, $filter = "")
-  {
+/**
+ * @throws Exception
+ */
+function fetchPerformanceFeedback($con, $filter = "")
+{
     try {
         $query = "SELECT * FROM PerformanceFeedback";
         if ($filter != "") {
             $query .= sprintf(" WHERE %s", $filter);
         }
         $result = mysqli_query($con, $query);
-        if($result && mysqli_num_rows($result) > 0){
-            $performanceFeedback = mysqli_fetch_all($result, MYSQLI_ASSOC);
-            return $performanceFeedback;
+        // if 1 row return PerformanceFeedback object
+        if ($result && mysqli_num_rows($result) > 0 && mysqli_num_rows($result) < 2){
+            $res = mysqli_fetch_array($result, MYSQLI_ASSOC);
+            return getPerformanceFeedback($res);
+        }
+        // if more than 1 row return array of PerformanceFeedback
+        else {
+            $performanceFeedbackArr[] = array();
+            while ($res = mysqli_fetch_array($result)) {
+                $performanceFeedback = getPerformanceFeedback($res);
+                $performanceFeedbackArr[] = $performanceFeedback;
+            }
+            return $performanceFeedbackArr;
         }
     } catch (Exception $e) {
-      throw $e;
+        throw $e;
     }
-  }
-?>
+}
+
+/**
+ * @param array $res
+ * @return PerformanceFeedback
+ */
+function getPerformanceFeedback(array $res): PerformanceFeedback
+{
+    $performanceFeedback = new PerformanceFeedback();
+    $performanceFeedback->set_PerformanceFeedbackID($res['PerformanceFeedbackID']);
+    $performanceFeedback->set_ManagerUserID($res['ManagerUserID']);
+    $performanceFeedback->set_TraineeUserID($res['TraineeUserID']);
+    $performanceFeedback->set_TrainingRegimenID($res['TrainingRegimen']);
+    $performanceFeedback->set_DateCreated($res['DateCreated']);
+    $performanceFeedback->set_LastUpdated($res['LastUpdated']);
+    return $performanceFeedback;
+}

@@ -9,6 +9,9 @@ class TrainingRegimen {
  public $PerformanceReportDate;
 
   // set and get methods
+  function set_TrainingRegimenID($TrainingRegimenID) {
+    $this->TrainingRegimenID = $TrainingRegimenID;
+  }
   function get_TrainingRegimenID() {
     return $this->TrainingRegimenID;
   }
@@ -49,20 +52,48 @@ class TrainingRegimen {
   }
 }
 
-  function fetchTrainingRegimen($con, $filter = "")
-  {
+/**
+ * @throws Exception
+ */
+function fetchTrainingRegimen($con, $filter = "")
+{
     try {
-        $query = "SELECT * FROM TrainingRegimen";
+        $query = "SELECT * FROM TtrainingRegimen";
         if ($filter != "") {
             $query .= sprintf(" WHERE %s", $filter);
         }
         $result = mysqli_query($con, $query);
-        if($result && mysqli_num_rows($result) > 0){
-            $traineeRegimen = mysqli_fetch_all($result, MYSQLI_ASSOC);
-            return $traineeRegimen;
+        // if 1 row return TrainingRegimen object
+        if ($result && mysqli_num_rows($result) > 0 && mysqli_num_rows($result) < 2){
+            $res = mysqli_fetch_array($result, MYSQLI_ASSOC);
+            return getTrainingRegimen($res);
+        }
+        // if more than 1 user return array of TrainingRegimen
+        else {
+            $trainingRegimenArr[] = array();
+            while ($res = mysqli_fetch_array($result)) {
+                $trainingRegimen = getTrainingRegimen($res);
+                $trainingRegimenArr[] = $trainingRegimen;
+            }
+            return $trainingRegimenArr;
         }
     } catch (Exception $e) {
-      throw $e;
+        throw $e;
     }
-  }
-?>
+}
+
+/**
+ * @param array $res
+ * @return TrainingRegimen
+ */
+function getTrainingRegimen(array $res): TrainingRegimen
+{
+    $trainingRegimen = new TrainingRegimen();
+    $trainingRegimen->set_TrainingRegimenID($res['TrainingRegimenID']);
+    $trainingRegimen->set_TraineeUserID($res['TraineeUserID']);
+    $trainingRegimen->set_RegimenStart($res['RegimenStart']);
+    $trainingRegimen->set_RegimenEnd($res['RegimenEnd']);
+    $trainingRegimen->set_IsPerformanceReportGenerated($res['IsPerformanceReportGenerated']);
+    $trainingRegimen->set_PerformanceReportDate($res['PerformanceReportDate']);
+    return $trainingRegimen;
+}

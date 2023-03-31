@@ -10,6 +10,9 @@ class Portfolio {
     public $LastUpdated;
 
   // set and get methods
+  function set_PortfolioID($PortfolioID) {
+    $this->PortfolioID = $PortfolioID;
+  }
   function get_PortfolioID() {
     return $this->PortfolioID;
   }
@@ -57,18 +60,49 @@ class Portfolio {
   }
 }
 
-  function fetchPortfolio($con, $userId)
-  {
+/**
+ * @throws Exception
+ */
+function fetchPortfolio($con, $filter = "")
+{
     try {
-        $query = "SELECT * FROM Portfolio WHERE UserID = '$userId'";
+        $query = "SELECT * FROM Portfolio";
+        if ($filter != "") {
+            $query .= sprintf(" WHERE %s", $filter);
+        }
         $result = mysqli_query($con, $query);
-        if($result && mysqli_num_rows($result) > 0){
-            $portfolio = mysqli_fetch_all($result, MYSQLI_ASSOC);
-            return $portfolio;
+        // if 1 row return Portfolio object
+        if ($result && mysqli_num_rows($result) > 0 && mysqli_num_rows($result) < 2){
+            $res = mysqli_fetch_array($result, MYSQLI_ASSOC);
+            return getPortfolio($res);
+        }
+        // if more than 1 row return array of Portfolio
+        else {
+            $portfolioArr[] = array();
+            while ($res = mysqli_fetch_array($result)) {
+                $portfolio = getPortfolio($res);
+                $portfolioArr[] = $portfolio;
+            }
+            return $portfolioArr;
         }
     } catch (Exception $e) {
-      throw $e;
+        throw $e;
     }
-  }
+}
 
-?>
+/**
+ * @param array $res
+ * @return Portfolio
+ */
+function getPortfolio(array $res): Portfolio
+{
+    $portfolio = new Portfolio();
+    $portfolio->set_PortfolioID($res['PortfolioID']);
+    $portfolio->set_UserID($res['UserID']);
+    $portfolio->set_CommodityID($res['CommodityID']);
+    $portfolio->set_Amount($res['Amount']);
+    $portfolio->set_PurchaseAvg($res['PurchaseAvg']);
+    $portfolio->set_PositionStarted($res['PositionStarted']);
+    $portfolio->set_LastUpdated($res['LastUpdated']);
+    return $portfolio;
+}
