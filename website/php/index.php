@@ -73,7 +73,7 @@
         ?>
         </table>
             <p>
-            <?php $total = getAccountTotal($con, $portfolio, $user_data->get_id());
+            <?php $total = getAccountTotal($con, $portfolio, $user_data->get_AvailableFunds());
                 echo "Available funds in your account: $", number_format($user_data->get_AvailableFunds(),2);
                 echo '<br>';
                 echo "Total value in account is: $",  number_format($total, 2);
