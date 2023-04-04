@@ -15,14 +15,14 @@ class Users {
   function set_ID($id) {
     $this->ID = $id;
   }
-  public function get_ID() {
+  function get_ID() {
     return $this->ID;
   }
 
   function set_UserID($UserID) {
     $this->UserID = $UserID;
   }
-  public function get_UserID() {
+  function get_UserID() {
     return $this->UserID;
   }
 
