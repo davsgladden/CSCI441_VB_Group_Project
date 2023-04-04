@@ -16,7 +16,8 @@
             if($user){
                     if($user->get_Password() === $password) {
                         $_SESSION['user_id'] = $user->get_UserID();
-                        $user->set_LastLogin(date("Y-m-d H:m:s"));
+                        date_default_timezone_set('America/Chicago'); //Central timezone
+                        $user->set_LastLogin(date('Y-m-d H:i:s'));
                         updateUser($con, $user);
 
                         header("Location: index.php");
