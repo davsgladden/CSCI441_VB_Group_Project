@@ -3,6 +3,7 @@
 
     include("connection.php");
     include("functions.php");
+    include("controller/systemController.php");
 
     if($_SERVER['REQUEST_METHOD'] == "POST"){
         //Something was posted
@@ -12,8 +13,15 @@
         if(!empty($user_name) && !empty($password) && !is_numeric($user_name)){
             //Save to database
             $user_id = random_num(19);
-            $query = "INSERT INTO users (UserID,UserName,Password,IsActive) VALUES ('$user_id', '$user_name', '$password', 1)";
-            mysqli_query($con, $query);
+
+            $newUser = new Users();
+            $newUser->set_userID($user_id);
+            $newUser->set_userName($user_name);
+            $newUser->set_password($password);
+            $newUser->set_AvailableFunds(10000);
+            $newUser->set_IsActive(1);
+            $newUser->set_UserTypeID(1);/**  hardcoded to trainee user. //todo: update to also allow manager users */
+            insertUser($con, $newUser);
 
             header("Location: login.php");
             die;

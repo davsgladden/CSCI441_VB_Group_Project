@@ -2,6 +2,7 @@
  session_start();
  include("connection.php");
  include("functions.php");
+ include("controller/systemController.php");
 
  if($_SERVER['REQUEST_METHOD'] == "POST"){
      //Something was posted
@@ -11,20 +12,17 @@
         if(!empty($user_name) && !empty($password) && !is_numeric($user_name)){
             //Read from database
     
-            $query = "SELECT * FROM Users WHERE UserName = '$user_name' LIMIT 1";
-            $result = mysqli_query($con,$query);
+            $user = fetchUser($con, "UserName = '$user_name' and Password = '$password'");
+            if($user){
+                    if($user->get_Password() === $password) {
+                        $_SESSION['user_id'] = $user->get_UserID();
+                        $user->set_LastLogin(date("Y-m-d H:m:s"));
+                        updateUser($con, $user);
 
-            if($result){
-                if($result && mysqli_num_rows($result) > 0){
-                    $user_data = mysqli_fetch_assoc($result);
-
-                    if($user_data['Password'] === $password){
-                        $_SESSION['user_id'] = $user_data['UserID'];
                         header("Location: index.php");
                         die;
                     }
                 }
-            }
 
             echo '<p style="color: red; text-align: center;">Wrong username or password!</p>';
         }else{

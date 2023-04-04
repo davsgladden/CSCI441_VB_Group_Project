@@ -15,14 +15,14 @@ class Users {
   function set_ID($id) {
     $this->ID = $id;
   }
-  function get_ID() {
+  public function get_ID() {
     return $this->ID;
   }
 
   function set_UserID($UserID) {
     $this->UserID = $UserID;
   }
-  function get_UserID() {
+  public function get_UserID() {
     return $this->UserID;
   }
 
@@ -105,6 +105,43 @@ function fetchUser($con, $filter = "")
       throw $e;
     }
   }
+
+/**
+ * @param $con
+ * @param Users $user
+ * Inserts User object to Users table
+ */
+  function insertUser($con, Users $user ){
+    try{
+        $query = "INSERT INTO users (UserID,UserName,Password,UserTypeID, AvailableFunds, IsActive) 
+                VALUES ($user->UserID, '$user->UserName', '$user->Password', $user->UserTypeID, $user->AvailableFunds, $user->IsActive)";
+        mysqli_query($con, $query);
+    } catch (exception $e) {
+        throw $e;
+    }
+  }
+
+/**
+ * @param $con
+ * @param Users $user
+ * Updates Users table with User object
+ */
+function updateUser($con, Users $user ){
+    try{
+        $query = "Update Users 
+                Set UserName = '$user->UserName',
+                    Password = '$user->Password',
+                    UserTypeID = $user->UserTypeID, 
+                    AvailableFunds = $user->AvailableFunds, 
+                    IsActive = $user->IsActive,
+                    LastLogin = '$user->LastLogin'
+                   Where UserID = '$user->UserID'";
+        echo $query;
+        mysqli_query($con, $query);
+    } catch (exception $e) {
+        throw $e;
+    }
+}
 
 /**
  * @param array $res
