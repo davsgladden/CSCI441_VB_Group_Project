@@ -5,7 +5,10 @@
     include("functions.php");
     include("controller/systemController.php");
 
-    $user_data = check_login($con);
+    if(isset($_SESSION['user_id'])) {
+        $user_data = fetchUser($con, "UserID = $_SESSION[user_id]");
+    }
+
 
 ?>
 <!DOCTYPE html>

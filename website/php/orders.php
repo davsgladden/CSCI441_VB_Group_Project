@@ -5,8 +5,11 @@
     include("functions.php");
     include("controller/systemController.php");
 
-    $user_data = check_login($con);
+if(isset($_SESSION['user_id'])) {
+    $user_data = fetchUser($con, "UserID = $_SESSION[user_id]");
     $commodityArr = fetchCommodity($con);
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -40,14 +43,13 @@
         margin-right: auto;
     }
 
+
 </style>
 <body>
     <?php include_once("navbar.php");?>
 
     <br>
-    <p>Hello, <?php echo $user_data['UserName']; ?>.<br>
-        This is the orders page.</p>
-
+    <p>Hello, <?php echo $user_data->get_UserName(); ?>.<br>
     <div>
         <form class = "center">
             <select>
@@ -70,12 +72,13 @@
               <th>Commodity Name</th>
               <th>Current Price</th>';
             if ($commodityArr > 1)
+               // $commodity = new Commodity();
                 foreach(array_filter($commodityArr) as $commodity){
                     echo '
                     <tr>
-                        <td>'.$commodity->Symbol.'</td>
-                        <td>'.$commodity->CommodityName.'</td>
-                        <td>'.$commodity->CurrentPrice.'</td>
+                        <td>'.$commodity->get_Symbol().'</td>
+                        <td>'.$commodity->get_CommodityName().'</td>
+                        <td>'.$commodity->get_CurrentPrice().'</td>
                     </tr>
                     ';
                 }
@@ -88,11 +91,13 @@
                $yValues = array();
 
                foreach(array_filter($commodityHistory) as $history){
-                   $xValues[] = substr($history->DateCreated,0,10);
-                   $yValues[] = $history->Price;
+                   $xValues[] = substr($history->get_DateCreated(),0,10);
+                   $yValues[] = $history->get_Price();
                 }
             ?>
-
+            <form method="post">
+                <button class="button"><a href="ticket.php" target="myiFrame">Sell</a></button>
+            </form>
             <?php //plotting the chart  ?>
             <script src="//code.jquery.com/jquery-1.9.1.js"></script>
             <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
@@ -122,6 +127,8 @@
                     }
                 });
            </script>
+
+            <iframe width="560" height ="315" class="center" name="myiFrame" id="myiFrame" ></iframe>
         </table>
 </body>
 </html>

@@ -44,6 +44,11 @@
     }
 
 </style>
+<script>
+    const closeIFrame = function() {
+        $('#myiFrame').remove();
+    }
+</script>
 <body>
     <?php include_once("navbar.php");?>
 
