@@ -9,6 +9,7 @@
     include("entity/transactionHistory.php");
     include("entity/users.php");
     include("entity/userType.php");
+    include("commoditiesAPI.php");
 
     //Pull portfolio data with total value
     function getPortfolioInfo($con,$id){
@@ -48,4 +49,15 @@ function getAccountTotal($con, $portfolio, $funds) {
         }
     }
 
+//get latest price from API, updates db with new price, and insert new price history in db
+function updateCommodityPrice($con, $symbol,$endpoint,$access_key){
+    try {
+        $Commodity = fetchCommodity($con, "Symbol='$symbol'");
+        insertCommodityHistory($con, $Commodity); //function created in history entity
+        updateCommodity($con, $Commodity,$endpoint,$access_key); //function created in commodity entity
+        return $Commodity;
+    }catch (exception $e){
+        throw $e;
+    }
+}
 ?>
