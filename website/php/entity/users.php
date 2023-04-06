@@ -114,7 +114,12 @@ function fetchUser($con, $filter = "")
   function insertUser($con, Users $user ){
     try{
         $query = "INSERT INTO users (UserID,UserName,Password,UserTypeID, AvailableFunds, IsActive) 
-                VALUES ($user->UserID, '$user->UserName', '$user->Password', $user->UserTypeID, $user->AvailableFunds, $user->IsActive)";
+                VALUES ( $user->UserID, 
+                        '$user->UserName',
+                        '$user->Password', 
+                         $user->UserTypeID,
+                         $user->AvailableFunds, 
+                         $user->IsActive)";
         mysqli_query($con, $query);
     } catch (exception $e) {
         throw $e;
@@ -136,7 +141,6 @@ function updateUser($con, Users $user ){
                     IsActive = $user->IsActive,
                     LastLogin = '$user->LastLogin'
                    Where UserID = '$user->UserID'";
-        echo $query;
         mysqli_query($con, $query);
     } catch (exception $e) {
         throw $e;
