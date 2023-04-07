@@ -92,10 +92,10 @@ function insertCommodityHistory($con, $Commodity){
     VALUES ('".$Commodity->get_CommodityID()."','".$Commodity->get_CurrentPrice()."','".$Commodity->get_LastUpdated()."')";
     //excecute query to insert current commodity info into history table
     mysqli_query($con, $query);
-    
+    $CommodityID = $Commodity->get_CommodityID();
     //need to return history entity
-    
-    return $Commodity;
+    $newCommodityHistory = fetchCommodityHistory($con, "CommodityID='$CommodityID'");
+    return $newCommodityHistory;
 
   } catch (Exception $e){
       //If symbol don't exist, the array could not be accessed and errow is thrown
