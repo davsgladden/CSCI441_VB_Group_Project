@@ -50,7 +50,7 @@ function fetchCommodityHistory($con, $filter = "")
         // if 1 row return CommodityHistory object
         if ($result && mysqli_num_rows($result) > 0 && mysqli_num_rows($result) < 2){
             $res = mysqli_fetch_array($result, MYSQLI_ASSOC);
-            return getCommodityHistoy($res);
+            return getCommodityHistory($res);
         }
         // if more than 1 row return array of CommodityHistory
         else {
@@ -78,4 +78,28 @@ function getCommodityHistory(array $res): CommodityHistory
     $commodityHistory->set_Price($res['Price']);
     $commodityHistory->set_DateCreated($res['DateCreated']);
     return $commodityHistory;
+}
+
+//
+function insertCommodityHistory($con, $Commodity){
+  //connect to db
+  //find current price information and commodity
+  //insert new current data to history table
+  try {
+    //update db
+    //set sql query
+    $query = "INSERT INTO CommodityHistory (CommodityID, Price, DateCreated)
+    VALUES ('".$Commodity->get_CommodityID()."','".$Commodity->get_CurrentPrice()."','".$Commodity->get_LastUpdated()."')";
+    //excecute query to insert current commodity info into history table
+    mysqli_query($con, $query);
+    $CommodityID = $Commodity->get_CommodityID();
+    //need to return history entity
+    $newCommodityHistory = fetchCommodityHistory($con, "CommodityID='$CommodityID'");
+    return $newCommodityHistory;
+
+  } catch (Exception $e){
+      //If symbol don't exist, the array could not be accessed and errow is thrown
+      //If database connection is wrong, error is thrown
+      throw $e;
+  }
 }
