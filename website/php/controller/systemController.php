@@ -72,7 +72,7 @@
     //todo: update shell function with implementation code
     function purchaseOrder($con, $ticket) {
         try {
-
+            updateCommodityPrice($con,$ticket->get_Symbol(),$endpoint,$access_key);
         }
         catch (Exception $e) {
             throw $e;
