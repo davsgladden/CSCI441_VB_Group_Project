@@ -9,6 +9,7 @@
         $user_data = fetchUser($con, "UserID = $_SESSION[user_id]");
     }
 
+
 ?>
 <!DOCTYPE html>
 <html>
