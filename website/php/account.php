@@ -5,7 +5,9 @@
     include("functions.php");
     include("controller/systemController.php");
 
-    $user_data = check_login($con);
+    if(isset($_SESSION['user_id'])) {
+        $user_data = fetchUser($con, "UserID = $_SESSION[user_id]");
+    }
 
 ?>
 <!DOCTYPE html>
@@ -23,7 +25,7 @@
     <?php include_once("navbar.php");?>
 
     <br>
-    <p>Hello, <?php echo $user_data['UserName']; ?>.<br>
+    <p>Hello, <?php echo $user_data->get_UserName(); ?>.<br>
         This is the account page.</p>
 </body>
 </html>
