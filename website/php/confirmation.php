@@ -29,6 +29,25 @@
         padding: 15px;
         font-size: 20px;
     }
+
+    form{
+        font-size: 18px;
+        max-width: 100%;
+        border-radius: 0.25em;
+        padding: 0.25em 0.5em;
+        font-size: 1.25rem;
+    }
+
+    .submit {
+        background-color: #549bf7; /* Aqua */
+        border: grey;
+        color: black;
+        padding: 10px 24px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 12px;
+    }
+
 </style>
 <script>
     function clickAlert() {
@@ -37,8 +56,7 @@
     }
 </script>
 <body>
-    <p>Hello, <?php echo $user_data->get_UserName(); ?>.<br>
-        This is the ticket page.</p>
+    <p>Are you sure you want to make this order?</p>
     <form class = "center" action ="ticket.php">
         You are about to submit a sell order for the following:<br>
         Commodity: <?php echo $Commodity; ?><br>
@@ -47,8 +65,8 @@
         Click 'Back' to update your order or click 'Submit' to confirm the sell order.
 
         <br>
-        <input type="submit" name="back" value="Back" onClick="submit">
-        <input type="submit" name="submit" value="Submit" onClick="clickAlert();">
+        <input class="submit type="submit" name="back" value="Back" onClick="submit">
+        <input class="submit type="submit" name="submit" value="Submit" onClick="clickAlert();">
     </form>
 </body>
 </html>

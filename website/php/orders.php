@@ -23,26 +23,83 @@ if(isset($_SESSION['user_id'])) {
         font-size: 20px;
     }
 
-    table,form,chart {
+    #tables{
+        display: flex;
+        align-items: flex-start;
+        flex-direction: row;
+        justify-content: center;
+        padding: 15px;
+        flex-grow: 1;
+        flex-wrap: wrap;
+
+    }
+    #forms{
+        display: flex;
+        align-items: flex-start;
+        flex-direction: row;
+        justify-content: left;
+        padding: 15px;
+        flex-grow: 1;
+    }
+    
+
+    table,chart {
         font-family: arial, sans-serif;
         border-collapse: collapse;
-        width: 65%;
     }
 
+    select {
+        width: 100%;
+        min-width: 15ch;
+        max-width: 30ch;
+        border-radius: 0.25em;
+        padding: 0.25em 0.5em;
+        font-size: 1.25rem;
+        cursor: pointer;
+        line-height: 1.1;
+        border: 1px solid grey;
+}
     td, th {
         border: 1px solid #dddddd;
         text-align: left;
         padding: 8px;
+    }
+    table{
+        width: 65%
     }
 
     tr:nth-child(even) {
         background-color: #dddddd;
     }
     .center {
-        margin-left: auto;
-        margin-right: auto;
+        display: inline-block;
+        align-items: left;
+        width: 50%;
     }
 
+    .submit {
+        background-color: #549bf7; /* Black */
+        border: grey;
+        color: black;
+        padding: 10px 24px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 18px;
+}
+    .button{
+        background-color: #549bf7; /* Black */
+        border: grey;
+        color: black;
+        padding: 10px 24px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 18px;
+        margin-left: 600px;
+    }
+    .break {
+    flex-basis: 100%;
+    height: 0;
+    }
 
 </style>
 <body>
@@ -50,8 +107,8 @@ if(isset($_SESSION['user_id'])) {
 
     <br>
     <p>Hello, <?php echo $user_data->get_UserName(); ?>.<br>
-    <div>
-        <form class = "center">
+    <div id="forms">
+        <form class= "center">
             <select>
                 <option selected="selected">Choose a commodity</option>
                 <?php
@@ -61,12 +118,15 @@ if(isset($_SESSION['user_id'])) {
                     }
                 ?>
             </select>
-            <input type="submit" value="Submit">
+            <input class="submit" type="submit" value="Submit">
         </form>
+        <form method="post">
+                <button class="button"><a href="ticket.php" target="myiFrame">Sell</a></button>
+            </form>
     </div>
     <br>
-    <div>
-        <table class="center">
+    <div id="tables">
+        <table>
             <?php
             echo '<th>Symbol</th>
               <th>Commodity Name</th>
@@ -83,7 +143,6 @@ if(isset($_SESSION['user_id'])) {
                     ';
                 }
             ?>
-            <br>
             <?php
             //get history for selected commodity
             $commodityHistory = fetchCommodityHistory($con, "CommodityID = 3"); //todo: make dynamic
@@ -95,17 +154,15 @@ if(isset($_SESSION['user_id'])) {
                    $yValues[] = $history->get_Price();
                 }
             ?>
-            <form method="post">
-                <button class="button"><a href="ticket.php" target="myiFrame">Sell</a></button>
-            </form>
+
             <?php //plotting the chart  ?>
             <script src="//code.jquery.com/jquery-1.9.1.js"></script>
             <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-            <canvas id="myChart" class="center" style="width:100%;max-width:600px"></canvas>
+            <canvas id="myChart" class="center" style="width:100%;max-width:700px"></canvas>
             <script>
                 const x = <?php echo json_encode($xValues) ?>;
                 const y = <?php echo json_encode($yValues) ?>;
-
+            
                 new Chart("myChart", {
                     type: "line",
                     data: {
@@ -127,8 +184,7 @@ if(isset($_SESSION['user_id'])) {
                     }
                 });
            </script>
-
-            <iframe width="560" height ="315" class="center" name="myiFrame" id="myiFrame" ></iframe>
+    <iframe width="700" height ="315" class="center" name="myiFrame" id="myiFrame" ></iframe>
         </table>
 </body>
 </html>
