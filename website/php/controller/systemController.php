@@ -11,7 +11,8 @@
     include("entity/userType.php");
     include("commoditiesAPI.php");
 
-    //Pull portfolio data with total value
+    /** User functions **/
+    /**  Pull portfolio data with total value **/
     function getPortfolioInfo($con,$id){
         try {
             $query = "Select UserID, Symbol, CommodityName, Amount, PurchaseAvg,
@@ -30,22 +31,62 @@
         }
     }
 
-/**
- * pull available funds plus total value aggregate
- * @throws Exception
- */
-function getAccountTotal($con, $portfolio, $funds) {
-    try {
-        //aggregate total value and return sum with available funds
-        if ($portfolio < 1) return null;
-        $AmountTotal = 0;
-        foreach($portfolio as $result) {
-            $AmountTotal += $result['TotalValue'];
+    /**
+     * pull available funds plus total value aggregate
+     * @throws Exception
+     */
+    function getAccountTotal($con, $portfolio, $funds) {
+        try {
+            //aggregate total value and return sum with available funds
+            if ($portfolio < 1) return null;
+            $AmountTotal = 0;
+            foreach($portfolio as $result) {
+                $AmountTotal += $result['TotalValue'];
+            }
+            return $AmountTotal + $funds;
         }
-        return $AmountTotal + $funds;
-    }
+            catch (Exception $e) {
+            throw $e;
+            }
+        }
+
+    //todo: update shell function with implementation code
+    function getPortfolioHistory($con, $id) {
+        try {
+
+        }
         catch (Exception $e) {
-        throw $e;
+            throw $e;
+        }
+    }
+
+    //todo: update shell function with implementation code
+    function resetPortfolio($con, $id) {
+        try {
+
+        }
+        catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    //todo: update shell function with implementation code
+    function purchaseOrder($con, $ticket) {
+        try {
+
+        }
+        catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    //todo: update shell function with implementation code
+    function sellOrder($con, $ticket) {
+       try {
+
+       }
+       catch (Exception $e) {
+            throw $e;
         }
     }
 
@@ -60,4 +101,5 @@ function updateCommodityPrice($con, $symbol,$endpoint,$access_key){
         throw $e;
     }
 }
+
 ?>

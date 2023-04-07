@@ -5,8 +5,11 @@
     include("functions.php");
     include("controller/systemController.php");
 
-    $user_data = fetchUser($con, "UserID = $_SESSION[user_id]");
-    $portfolio = getPortfolioInfo($con, $user_data->get_ID());
+    if(isset($_SESSION['user_id'])) {
+        $user_data = fetchUser($con, "UserID = $_SESSION[user_id]");
+        $portfolio = getPortfolioInfo($con, $user_data->get_ID());
+    }
+
 
 ?>
 <!DOCTYPE html>
