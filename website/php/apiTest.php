@@ -3,7 +3,7 @@
     include("connection.php");
     include("controller/systemController.php");
 
-    $symbol = 'ZRU22';
+    $symbol = 'POTATOES';
 
     echo('We will be testing '.$symbol.'.');
 

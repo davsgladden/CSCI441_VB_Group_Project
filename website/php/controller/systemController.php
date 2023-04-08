@@ -70,8 +70,14 @@
         }
     }
 
-    //todo: update shell function with implementation code
-    function purchaseOrder($con, $transaction) {
+/**
+ * @param $con
+ * @param TransactionHistory $transaction
+ * @return void
+ * @throws Exception
+ * Processes purchase orders from the user
+ */
+function purchaseOrder($con, TransactionHistory $transaction) {
         try {
             //updateCommodityPrice($con,$ticket->get_Symbol(),$endpoint,$access_key);
             //update available funds
@@ -79,35 +85,60 @@
             $portfolio = fetchPortfolio($con, "UserID = $user->ID");
 
             $currFunds = $user->get_AvailableFunds();
-            if ($currFunds < $transaction->get_total()){
-                throw Exception("Purchase total exceeds current funds");
+            if ($currFunds < $transaction->get_TransactionPrice()){
+                throw new Exception("Purchase total exceeds current funds");
             }
+
+            //update funds
+            $user->set_AvailableFunds($user->get_AvailableFunds() - $transaction->get_TransactionPrice());
+            updateUser($con, $user);
+
+            //insert transaction history
+            insertTransactionHistory($con, $transaction);
+
             ///compare portfolio key with ticket commodity
-            foreach(array_filter($portfolio) as $p){
-                if($p->CommodityID === $transaction->get_CommodityID()){
-                    //Update funds
-                    $user->set_AvailableFunds($user->get_AvailableFunds() - $transaction->get_TransactionPrice());
-                    updateUser($con, $user);
-
-                    //insert transaction history
-                    insertTransactionHistory($con, $transaction);
-
-                    echo 'portfolio'; echo "<br>";
-                    //update portfolio
-                    $p->set_Amount($p->get_Amount() - $transaction->get_Amount());
-                    $p->set_PurchaseAvg(($p->get_PurchaseAvg() + $transaction->get_TransactionPrice())/2);
-                    $p->set_LastUpdated($transaction->get_TransactionDate());
-                    updatePortfolio($con, $p);
-
+            $keyExists = 0;
+            foreach(array_filter($portfolio) as $compare) {
+                if ($compare->CommodityID === $transaction->get_CommodityID()) {
+                    $keyExists = 1;
+                }
+            }
+            if ($keyExists==0){
+                echo 'Insert new';
+                //insert portfolio
+                $newPortfolio = new Portfolio();
+                $newPortfolio->set_UserID($user->get_ID());
+                $newPortfolio->set_CommodityID($transaction->get_CommodityID());
+                $newPortfolio->set_Amount($transaction->get_Amount());
+                $newPortfolio->set_PurchaseAvg($transaction->get_Price()); //Initial position, avg will be price of transaction.
+                $newPortfolio->set_PositionStarted($transaction->get_TransactionDate());
+                $newPortfolio->set_LastUpdated($transaction->get_TransactionDate());
+                insertPortfolio($con, $newPortfolio);
+            }
+            else {
+                foreach(array_filter($portfolio) as $p){
+                    if($p->CommodityID === $transaction->get_CommodityID()){
+                        //update portfolio
+                        $p->set_Amount($p->get_Amount() + $transaction->get_Amount());
+                        $p->set_PurchaseAvg(($p->get_PurchaseAvg() + $transaction->get_TransactionPrice())/2); //todo: revisit calc
+                        $p->set_LastUpdated($transaction->get_TransactionDate());
+                        updatePortfolio($con, $p);
                     }
                 }
             }
+        }
         catch (Exception $e) {
             echo $e->getMessage();
         }
     }
 
-    //todo: update shell function with implementation code
+/**
+ * @param $con
+ * @param TransactionHistory $transaction
+ * @return void
+ * @throws Exception
+ * Processes sell orders from the user
+ */
     function sellOrder($con, TransactionHistory $transaction) {
         try {
             //updateCommodityPrice($con,$ticket->get_Symbol(),$endpoint,$access_key);

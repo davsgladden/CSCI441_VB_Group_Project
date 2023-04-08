@@ -123,7 +123,7 @@ if (isset($_POST['commodity'])) {
             <input class="submit" id="submitChart" type="submit" value="Submit";>
         </form>
         <form method="post">
-                <button class="button"><a href="ticket.php" target="myiFrame">Sell</a></button>
+                <button class="button"><a href="ticket.php" target="myiFrame">Make Order</a></button>
         </form>
     </div>
     <br>

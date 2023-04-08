@@ -17,6 +17,11 @@
     if (isset($_POST['amount'])) {
         $Amount = $_POST['amount'];
     }
+    $orderType = null;
+    if (isset($_POST['orderType'])) {
+        $orderType = $_POST['orderType'];
+    }
+
     $Price = $Commodity->get_CurrentPrice();
     $Total = $Price*$Amount;
 
@@ -27,7 +32,7 @@
     $Transaction->set_Amount($Amount);
     $Transaction->set_Price($Price);
     $Transaction->set_TransactionPrice($Total);
-    $Transaction->set_OrderType('Sell');
+    $Transaction->set_OrderType($orderType);
     $Transaction->set_TransactionDate(date('Y-m-d H:i:s'));
 
 ?>
@@ -70,7 +75,7 @@
 <body>
     <p>Are you sure you want to make this order?</p>
     <form class = "center" action ="submitOrder.php" method="post">
-        You are about to submit a sell order for the following:<br>
+        You are about to submit a <?php echo $orderType; ?> order for the following:<br>
         Commodity: <?php echo $Commodity->get_CommodityName(); ?><br>
         Amount: <?php echo $Amount; ?><br>
         Total Price: <?php echo $Total; ?><br><br>

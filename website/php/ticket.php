@@ -65,6 +65,11 @@
     <p>Hello, <?php echo $user_data->get_UserName(); ?>.<br>
         Would you like to make an order?</p>
     <form class = "center" method="post" action="confirmation.php">
+        <p>Select an order type:</p>
+        <input type="radio" id="orderType" name="orderType" value="Buy">
+        <label for="buy">Buy</label><br>
+        <input type="radio" id="orderType" name="orderType" value="Sell">
+        <label for="sell">Sell</label><br>
         <label for="commodity">Commodity:</label>
         <select id="commodity" name="commodity">
             <option selected="selected">Choose a commodity</option>

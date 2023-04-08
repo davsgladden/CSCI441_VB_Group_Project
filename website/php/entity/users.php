@@ -122,7 +122,7 @@ function fetchUser($con, $filter = "")
                          $user->IsActive)";
         mysqli_query($con, $query);
     } catch (exception $e) {
-        throw $e;
+        echo $e->getMessage();
     }
   }
 

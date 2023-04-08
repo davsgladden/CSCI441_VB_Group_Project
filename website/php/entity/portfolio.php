@@ -100,12 +100,32 @@ function updatePortfolio($con, Portfolio $portfolio ){
         $query = "Update Portfolio 
                 Set UserID = '$portfolio->UserID',
                     CommodityID = '$portfolio->CommodityID',
-                    Amount = $portfolio->Amount, 
+                    Amount = '$portfolio->Amount', 
                     PurchaseAvg = '$portfolio->PurchaseAvg', 
                     PositionStarted = '$portfolio->PositionStarted',
                     LastUpdated = '$portfolio->LastUpdated'
                    Where UserID = '$portfolio->UserID'
                         and CommodityID = '$portfolio->CommodityID'";
+        mysqli_query($con, $query);
+    } catch (exception $e) {
+        echo $e->getMessage();
+    }
+}
+
+/**
+ * @param $con
+ * @param Portfolio $portfolio
+ * Inserts Portfolio object to Portfolio table
+ */
+function insertPortfolio($con, Portfolio $portfolio ){
+    try{
+        $query = "INSERT INTO Portfolio (UserID,CommodityID,Amount,PurchaseAvg,PositionStarted,LastUpdated) 
+                VALUES ( $portfolio->UserID, 
+                         $portfolio->CommodityID,
+                        '$portfolio->Amount', 
+                        '$portfolio->PurchaseAvg',
+                        '$portfolio->PositionStarted', 
+                        '$portfolio->LastUpdated')";
         mysqli_query($con, $query);
     } catch (exception $e) {
         echo $e->getMessage();
