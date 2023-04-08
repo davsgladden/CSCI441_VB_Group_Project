@@ -63,7 +63,7 @@
 </style>
 <body>
     <p>Hello, <?php echo $user_data->get_UserName(); ?>.<br>
-        Please fill out the trade form below to create and order ticket.</p>
+        Please fill out the trade form below to create an order ticket.</p>
     <form class = "center" method="post" action="confirmation.php">
         Select an order type:<br>
         <input type="radio" id="orderType" name="orderType" value="Buy">
