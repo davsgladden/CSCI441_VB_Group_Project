@@ -96,29 +96,32 @@ function updateCommodity($con, $Commodity,$endpoint,$access_key){
     //Initialize CURL:
     $ch = curl_init('https://commodities-api.com/api/'.$endpoint.'?access_key='.$access_key.'');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
     //Store the data:
     $json = curl_exec($ch);
     curl_close($ch);
+
     //Decode JSON response:
     $response = json_decode($json, true);
-    //Access the value, e.g. WHEAT:
-    $newprice = $response['data']['rates'][$Commodity->get_Symbol()];
-
-    //update db
-    //set sql query
-    $query = "UPDATE Commodity SET CurrentPrice = '".$newprice."', LastUpdated = NOW() WHERE Symbol = '".$Commodity->get_Symbol()."'";
-    //excecute query to update current price information and date in db
-    mysqli_query($con, $query);
 
     $symbol = $Commodity->get_Symbol();
 
-    //update entity
-    $Commodity = fetchCommodity($con, "Symbol='$symbol'");
-    return $Commodity;
+    //Access the value, e.g. WHEAT:
+    $newprice = $response['data']['rates'][$symbol];
+    $convertedPrice = 1/$newprice;
+
+    //update db
+    //set sql query
+    $query = "UPDATE Commodity SET CurrentPrice = '".$convertedPrice."', LastUpdated = NOW() WHERE Symbol = '".$symbol."'";
+    //excecute query to update current price information and date in db
+    mysqli_query($con, $query);
+
+    //return entity
+    return fetchCommodity($con, "Symbol='$symbol'");
 
   } catch (Exception $e){
       //If symbol don't exist, the array could not be accessed and errow is thrown
       //If database connection is wrong, error is thrown
-      throw $e;
+      echo $e->getMessage();
   }
 }

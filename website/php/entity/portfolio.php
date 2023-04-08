@@ -86,7 +86,29 @@ function fetchPortfolio($con, $filter = "")
             return $portfolioArr;
         }
     } catch (Exception $e) {
-        throw $e;
+        echo $e->getMessage();
+    }
+}
+
+/**
+ * @param $con
+ * @param Portfolio $portfolio
+ * Updates Portfolio table with Portfolio object
+ */
+function updatePortfolio($con, Portfolio $portfolio ){
+    try{
+        $query = "Update Portfolio 
+                Set UserID = '$portfolio->UserID',
+                    CommodityID = '$portfolio->CommodityID',
+                    Amount = $portfolio->Amount, 
+                    PurchaseAvg = '$portfolio->PurchaseAvg', 
+                    PositionStarted = '$portfolio->PositionStarted',
+                    LastUpdated = '$portfolio->LastUpdated'
+                   Where UserID = '$portfolio->UserID'
+                        and CommodityID = '$portfolio->CommodityID'";
+        mysqli_query($con, $query);
+    } catch (exception $e) {
+        echo $e->getMessage();
     }
 }
 

@@ -7,6 +7,7 @@ class TransactionHistory {
  public $Amount;
  public $Price;
  public $TransactionPrice;
+ public $OrderType;
  public $TransactionDate;
 
 
@@ -53,6 +54,13 @@ class TransactionHistory {
     return $this->TransactionPrice;
   }
 
+  function set_OrderType($OrderType) {
+    $this->OrderType = $OrderType;
+  }
+  function get_OrderType() {
+    return $this->OrderType;
+  }
+
   function set_TransactionDate($TransactionDate) {
     $this->TransactionDate = $TransactionDate;
   }
@@ -92,6 +100,27 @@ function fetchTransactionHistory($con, $filter = "")
 }
 
 /**
+ * @param $con
+ * @param TransactionHistory $transaction
+ * Inserts TransactionHistory object to TransactionHistory table
+ */
+function insertTransactionHistory($con, TransactionHistory $transaction ){
+    try{
+        $query = "INSERT INTO TransactionHistory (UserID,CommodityID,Amount,Price, TransactionPrice, OrderType, TransactionDate) 
+                VALUES ( $transaction->UserID, 
+                         $transaction->CommodityID,
+                         $transaction->Amount, 
+                         $transaction->Price,
+                         $transaction->TransactionPrice, 
+                        '$transaction->OrderType',
+                        '$transaction->TransactionDate')";
+        mysqli_query($con, $query);
+    } catch (exception $e) {
+        echo $e->getMessage();
+    }
+}
+
+/**
  * @param array $res
  * @return TransactionHistory
  */
@@ -104,6 +133,7 @@ function getTransactionHistory(array $res): TransactionHistory
     $transactionHistory->set_Amount($res['Amount']);
     $transactionHistory->set_Price($res['Price']);
     $transactionHistory->set_TransactionPrice($res['TransactionPrice']);
+    $transactionHistory->set_OrderType($res['OrderType']);
     $transactionHistory->set_TransactionDate($res['TransactionDate']);
     return $transactionHistory;
 }

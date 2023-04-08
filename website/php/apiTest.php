@@ -3,7 +3,7 @@
     include("connection.php");
     include("controller/systemController.php");
 
-    $symbol = 'WHEAT';
+    $symbol = 'ZRU22';
 
     echo('We will be testing '.$symbol.'.');
 
@@ -18,7 +18,7 @@
     //Decode JSON response:
     $response = json_decode($json, true);
     //Access the value, e.g. WHEAT:
-    echo($response['data']['rates']['WHEAT']);
+    echo(1/$response['data']['rates'][$symbol]);
 
     echo('<br>The current Price in the database for '.$symbol.' is: ');
 

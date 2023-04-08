@@ -9,7 +9,6 @@
         $user_data = fetchUser($con, "UserID = $_SESSION[user_id]");
         $portfolio = getPortfolioInfo($con, $user_data->get_ID());
     }
-
 ?>
 <!DOCTYPE html>
 <html>
