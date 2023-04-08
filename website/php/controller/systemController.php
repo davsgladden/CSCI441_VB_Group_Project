@@ -9,7 +9,7 @@
     include("entity/transactionHistory.php");
     include("entity/users.php");
     include("entity/userType.php");
-    include("controller/commoditiesAPI.php");
+    include("commoditiesAPI.php");
 
     /** User functions **/
     /**  Pull portfolio data with total value **/
@@ -98,13 +98,18 @@ function purchaseOrder($con, TransactionHistory $transaction) {
 
             ///compare portfolio key with ticket commodity
             $keyExists = 0;
-            foreach(array_filter($portfolio) as $compare) {
-                if ($compare->CommodityID === $transaction->get_CommodityID()) {
-                    $keyExists = 1;
+            if (is_array($portfolio)){
+                foreach(array_filter($portfolio) as $compare) {
+                    if ($compare->CommodityID === $transaction->get_CommodityID()) {
+                        $keyExists = 1;
+                    }
                 }
             }
+            else if ($portfolio->get_CommodityID() === $transaction->get_CommodityID()){
+                $keyExists = 1;
+            }
+
             if ($keyExists==0){
-                echo 'Insert new';
                 //insert portfolio
                 $newPortfolio = new Portfolio();
                 $newPortfolio->set_UserID($user->get_ID());
@@ -116,18 +121,46 @@ function purchaseOrder($con, TransactionHistory $transaction) {
                 insertPortfolio($con, $newPortfolio);
             }
             else {
-                foreach(array_filter($portfolio) as $p){
-                    if($p->CommodityID === $transaction->get_CommodityID()){
-                        //update portfolio
-                        $p->set_Amount($p->get_Amount() + $transaction->get_Amount());
-                        $p->set_PurchaseAvg(($p->get_PurchaseAvg() + $transaction->get_TransactionPrice())/2); //todo: revisit calc
-                        $p->set_LastUpdated($transaction->get_TransactionDate());
-                        updatePortfolio($con, $p);
+                if (is_array($portfolio)){
+                    foreach(array_filter($portfolio) as $p) {
+                        if ($p->CommodityID === $transaction->get_CommodityID()) {
+                            //update portfolio
+                            $average = calcPurchaseAvg($con, $transaction);
+                            $p->set_Amount($p->get_Amount() + $transaction->get_Amount());
+                            $p->set_PurchaseAvg($average['PurchaseAvg']);
+                            $p->set_LastUpdated($transaction->get_TransactionDate());
+                            updatePortfolio($con, $p);
+                        }
                     }
+                }
+                else {
+                    //update portfolio
+                    $average = calcPurchaseAvg($con, $transaction);
+                    $portfolio->set_Amount($portfolio->get_Amount() + $transaction->get_Amount());
+                    $portfolio->set_PurchaseAvg($average['PurchaseAvg']);
+                    $portfolio->set_LastUpdated($transaction->get_TransactionDate());
+                    updatePortfolio($con, $portfolio);
                 }
             }
         }
         catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    function calcPurchaseAvg($con, TransactionHistory $transaction){
+        try {
+            $query = "Select sum(transactionPrice) / sum(amount) as PurchaseAvg
+                        from TransactionHistory 
+                        where UserID = $transaction->UserID 
+                            and CommodityID = $transaction->CommodityID 
+                                and OrderType = 'Buy'";
+            $result = mysqli_query($con, $query);
+            if($result && mysqli_num_rows($result) > 0){
+                return mysqli_fetch_array($result, MYSQLI_ASSOC);
+            }
+            
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
     }

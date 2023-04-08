@@ -3,7 +3,7 @@
     include("connection.php");
     include("controller/systemController.php");
 
-    $test = 'buy';
+    $test = 'sell';
 
 /**
  * @param $con

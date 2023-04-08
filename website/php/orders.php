@@ -96,7 +96,7 @@ if (isset($_POST['commodity'])) {
         text-align: center;
         text-decoration: none;
         font-size: 18px;
-        margin-left: 600px;
+        margin-left: 400px;
     }
     .break {
     flex-basis: 100%;
@@ -123,10 +123,11 @@ if (isset($_POST['commodity'])) {
             <input class="submit" id="submitChart" type="submit" value="Submit";>
         </form>
         <form method="post">
-                <button class="button"><a href="ticket.php" target="myiFrame">Make Order</a></button>
+                <button class="button"><a href="ticket.php" target="myiFrame">Trade</a></button>
         </form>
     </div>
     <br>
+    <!--table of current prices -->
     <div id="tables">
         <table>
             <?php

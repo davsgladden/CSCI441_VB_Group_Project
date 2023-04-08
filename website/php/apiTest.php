@@ -3,7 +3,7 @@
     include("connection.php");
     include("controller/systemController.php");
 
-    $symbol = 'POTATOES';
+    $symbol = 'WHEAT';
 
     echo('We will be testing '.$symbol.'.');
 
@@ -17,6 +17,7 @@
     curl_close($ch);
     //Decode JSON response:
     $response = json_decode($json, true);
+
     //Access the value, e.g. WHEAT:
     echo(1/$response['data']['rates'][$symbol]);
 

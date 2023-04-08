@@ -13,7 +13,6 @@
             if ($transaction->get_OrderType() == 'Buy') {
                 purchaseOrder($con, $transaction);
             } else if ($transaction->get_OrderType() == 'Sell') {
-
                 sellOrder($con, $transaction);
             }
         } catch (Exception $e) {
