@@ -27,7 +27,7 @@
                 return mysqli_fetch_all($result, MYSQLI_ASSOC);
             }
         } catch (Exception $e) {
-          throw $e;
+            echo $e->getMessage();
         }
     }
 
@@ -46,7 +46,7 @@
             return $AmountTotal + $funds;
         }
             catch (Exception $e) {
-            throw $e;
+                echo $e->getMessage();
             }
         }
 
@@ -56,7 +56,7 @@
 
         }
         catch (Exception $e) {
-            throw $e;
+            echo $e->getMessage();
         }
     }
 
@@ -66,40 +66,156 @@
 
         }
         catch (Exception $e) {
-            throw $e;
+            echo $e->getMessage();
         }
     }
 
-    //todo: update shell function with implementation code
-    function purchaseOrder($con, $ticket) {
+/**
+ * @param $con
+ * @param TransactionHistory $transaction
+ * @return void
+ * @throws Exception
+ * Processes purchase orders from the user
+ */
+function purchaseOrder($con, TransactionHistory $transaction) {
         try {
+            //updateCommodityPrice($con,$ticket->get_Symbol(),$endpoint,$access_key);
+            //update available funds
+            $user = fetchUser($con, "ID = $transaction->UserID");
+            $portfolio = fetchPortfolio($con, "UserID = $user->ID");
 
+            $currFunds = $user->get_AvailableFunds();
+            if ($currFunds < $transaction->get_TransactionPrice()){
+                throw new Exception("Purchase total exceeds current funds");
+            }
+
+            //update funds
+            $user->set_AvailableFunds($user->get_AvailableFunds() - $transaction->get_TransactionPrice());
+            updateUser($con, $user);
+
+            //insert transaction history
+            insertTransactionHistory($con, $transaction);
+
+            ///compare portfolio key with ticket commodity
+            $keyExists = 0;
+            if (is_array($portfolio)){
+                foreach(array_filter($portfolio) as $compare) {
+                    if ($compare->CommodityID === $transaction->get_CommodityID()) {
+                        $keyExists = 1;
+                    }
+                }
+            }
+            else if ($portfolio->get_CommodityID() === $transaction->get_CommodityID()){
+                $keyExists = 1;
+            }
+
+            if ($keyExists==0){
+                //insert portfolio
+                $newPortfolio = new Portfolio();
+                $newPortfolio->set_UserID($user->get_ID());
+                $newPortfolio->set_CommodityID($transaction->get_CommodityID());
+                $newPortfolio->set_Amount($transaction->get_Amount());
+                $newPortfolio->set_PurchaseAvg($transaction->get_Price()); //Initial position, avg will be price of transaction.
+                $newPortfolio->set_PositionStarted($transaction->get_TransactionDate());
+                $newPortfolio->set_LastUpdated($transaction->get_TransactionDate());
+                insertPortfolio($con, $newPortfolio);
+            }
+            else {
+                if (is_array($portfolio)){
+                    foreach(array_filter($portfolio) as $p) {
+                        if ($p->CommodityID === $transaction->get_CommodityID()) {
+                            //update portfolio
+                            $average = calcPurchaseAvg($con, $transaction);
+                            $p->set_Amount($p->get_Amount() + $transaction->get_Amount());
+                            $p->set_PurchaseAvg($average['PurchaseAvg']);
+                            $p->set_LastUpdated($transaction->get_TransactionDate());
+                            updatePortfolio($con, $p);
+                        }
+                    }
+                }
+                else {
+                    //update portfolio
+                    $average = calcPurchaseAvg($con, $transaction);
+                    $portfolio->set_Amount($portfolio->get_Amount() + $transaction->get_Amount());
+                    $portfolio->set_PurchaseAvg($average['PurchaseAvg']);
+                    $portfolio->set_LastUpdated($transaction->get_TransactionDate());
+                    updatePortfolio($con, $portfolio);
+                }
+            }
         }
         catch (Exception $e) {
-            throw $e;
+            echo $e->getMessage();
         }
     }
 
-    //todo: update shell function with implementation code
-    function sellOrder($con, $ticket) {
-       try {
-
-       }
-       catch (Exception $e) {
-            throw $e;
+    function calcPurchaseAvg($con, TransactionHistory $transaction){
+        try {
+            $query = "Select sum(transactionPrice) / sum(amount) as PurchaseAvg
+                        from TransactionHistory 
+                        where UserID = $transaction->UserID 
+                            and CommodityID = $transaction->CommodityID 
+                                and OrderType = 'Buy'";
+            $result = mysqli_query($con, $query);
+            if($result && mysqli_num_rows($result) > 0){
+                return mysqli_fetch_array($result, MYSQLI_ASSOC);
+            }
+            
+        } catch (Exception $e) {
+            echo $e->getMessage();
         }
     }
 
-//get latest price from API, updates db with new price, and insert new price history in db
-function updateCommodityPrice($con, $symbol,$endpoint,$access_key){
-    try {
-        $Commodity = fetchCommodity($con, "Symbol='$symbol'");
-        insertCommodityHistory($con, $Commodity); //function created in history entity
-        updateCommodity($con, $Commodity,$endpoint,$access_key); //function created in commodity entity
-        return $Commodity;
-    }catch (exception $e){
-        throw $e;
-    }
-}
+/**
+ * @param $con
+ * @param TransactionHistory $transaction
+ * @return void
+ * @throws Exception
+ * Processes sell orders from the user
+ */
+    function sellOrder($con, TransactionHistory $transaction) {
+        try {
+            //updateCommodityPrice($con,$ticket->get_Symbol(),$endpoint,$access_key);
+            //update available funds
+            $user = fetchUser($con, "ID = $transaction->UserID");
+            $portfolio = fetchPortfolio($con, "UserID = $user->ID");
 
-?>
+            ///compare portfolio key with ticket commodity
+            foreach(array_filter($portfolio) as $p){
+                if($p->CommodityID === $transaction->get_CommodityID()){
+                    if($p->Amount < $transaction->get_amount()){
+                        throw new Exception("Sell amount exceeds current amount owned");
+                    }
+                    else {
+                        //Update funds
+
+                        $user->set_AvailableFunds($user->get_AvailableFunds() + $transaction->get_TransactionPrice());
+                        updateUser($con, $user);
+
+                        //insert transaction history
+                        insertTransactionHistory($con, $transaction);
+
+                        //update portfolio
+                        $p->set_Amount($p->get_Amount() - $transaction->get_Amount());
+                        $p->set_LastUpdated($transaction->get_TransactionDate());
+                        updatePortfolio($con, $p);
+                    }
+                }
+            }
+        }
+        catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    //get latest price from API, updates db with new price, and insert new price history in db
+    function updateCommodityPrice($con, $symbol,$endpoint,$access_key){
+        try {
+            $Commodity = fetchCommodity($con, "Symbol='$symbol'");
+            insertCommodityHistory($con, $Commodity); //function created in history entity
+            updateCommodity($con, $Commodity,$endpoint,$access_key); //function created in commodity entity
+            return $Commodity;
+        }catch (exception $e){
+            echo $e->getMessage();
+        }
+    }
+

@@ -7,9 +7,8 @@
 
     if(isset($_SESSION['user_id'])) {
         $user_data = fetchUser($con, "UserID = $_SESSION[user_id]");
-        $portfolio = getPortfolioInfo($con, $user_data->get_ID());
+        $commodityArr = fetchCommodity($con);
     }
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,7 +18,7 @@
 <style>
     body{margin-left: 100px;}
     p{
-        padding: 15px;
+        padding: 1pxpx;
         font-size: 20px;
     }
 
@@ -64,22 +63,27 @@
 </style>
 <body>
     <p>Hello, <?php echo $user_data->get_UserName(); ?>.<br>
-        Would you like to make an order?</p>
+        Please fill out the trade form below to create and order ticket.</p>
     <form class = "center" method="post" action="confirmation.php">
+        Select an order type:<br>
+        <input type="radio" id="orderType" name="orderType" value="Buy">
+        <label for="buy">Buy</label><br>
+        <input type="radio" id="orderType" name="orderType" value="Sell">
+        <label for="sell">Sell</label><br><br>
         <label for="commodity">Commodity:</label>
         <select id="commodity" name="commodity">
             <option selected="selected">Choose a commodity</option>
             <?php
             // Iterating through the Commodity object array
-            foreach(array_filter($portfolio) as $row){
-                echo "<option value='$row[CommodityName]'>$row[CommodityName]</option>";
+            foreach(array_filter($commodityArr) as $commodity){
+                echo "<option value='$commodity->CommodityName'>$commodity->Symbol</option>";
             }
             ?>
         </select><br>
         <label for="amount">Amount:  </label>
         <input type="text" id="amount" name="amount">
         <br>
-        <input class="submit" type="submit" name="submit" value="Submit">
+        <input class="submit" type="submit" name="submit" value="Preview Order">
     </form>
 </body>
 </html>

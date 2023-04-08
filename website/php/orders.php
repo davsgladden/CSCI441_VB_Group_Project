@@ -9,8 +9,10 @@ if(isset($_SESSION['user_id'])) {
     $user_data = fetchUser($con, "UserID = $_SESSION[user_id]");
     $commodityArr = fetchCommodity($con);
 }
-
-
+$selectedCommodity = new Commodity();
+if (isset($_POST['commodity'])) {
+    $selectedCommodity = fetchCommodity($con, "CommodityID = '$_POST[commodity]'");
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -94,7 +96,7 @@ if(isset($_SESSION['user_id'])) {
         text-align: center;
         text-decoration: none;
         font-size: 18px;
-        margin-left: 600px;
+        margin-left: 400px;
     }
     .break {
     flex-basis: 100%;
@@ -108,23 +110,24 @@ if(isset($_SESSION['user_id'])) {
     <br>
     <p>Hello, <?php echo $user_data->get_UserName(); ?>.<br>
     <div id="forms">
-        <form class= "center">
-            <select>
-                <option selected="selected">Choose a commodity</option>
+        <form class= "center" method="post" action="">
+            <select id="commodity" name="commodity">
+                <option value="" selected="selected">Choose a commodity</option>
                 <?php
                     // Iterating through the Commodity object array
                     foreach(array_filter($commodityArr) as $commodity){
-                        echo "<option value='($commodity->Symbol)'>$commodity->Symbol</option>";
+                        echo "<option value='$commodity->CommodityID'>$commodity->Symbol</option>";
                     }
                 ?>
             </select>
-            <input class="submit" type="submit" value="Submit">
+            <input class="submit" id="submitChart" type="submit" value="Submit";>
         </form>
         <form method="post">
-                <button class="button"><a href="ticket.php" target="myiFrame">Sell</a></button>
-            </form>
+                <button class="button"><a href="ticket.php" target="myiFrame">Trade</a></button>
+        </form>
     </div>
     <br>
+    <!--table of current prices -->
     <div id="tables">
         <table>
             <?php
@@ -142,17 +145,18 @@ if(isset($_SESSION['user_id'])) {
                     </tr>
                     ';
                 }
-            ?>
-            <?php
-            //get history for selected commodity
-            $commodityHistory = fetchCommodityHistory($con, "CommodityID = 3"); //todo: make dynamic
-               $xValues = array();
-               $yValues = array();
 
-               foreach(array_filter($commodityHistory) as $history){
-                   $xValues[] = substr($history->get_DateCreated(),0,10);
-                   $yValues[] = $history->get_Price();
+            //get history for selected commodity
+            $xValues = array();
+            $yValues = array();
+            if (!is_array($selectedCommodity) && $selectedCommodity->CommodityID > 0) {
+                $commodityHistory = fetchCommodityHistory($con, "CommodityID = '.$selectedCommodity->CommodityID.'");
+
+                foreach (array_filter($commodityHistory) as $history) {
+                    $xValues[] = substr($history->get_DateCreated(), 0, 10);
+                    $yValues[] = $history->get_Price();
                 }
+            }
             ?>
 
             <?php //plotting the chart  ?>
@@ -176,10 +180,10 @@ if(isset($_SESSION['user_id'])) {
                         }]
                     },
                     options: {
-                        title: {display: true, text: '<?php echo "Corn History" ?>'}, //todo: make dynamic
+                        title: {display: true, text: '<?php echo "$selectedCommodity->CommodityName History" ?>'},
                         legend: {display: false},
                         scales: {
-                            yAxes: [{ticks: {min: 6, max:6.8}}], //todo: make dynamic
+                            yAxes: [{ticks: {min: Math.min(...y)-1, max: Math.max(...y)+1}}], //todo: make dynamic
                         }
                     }
                 });
