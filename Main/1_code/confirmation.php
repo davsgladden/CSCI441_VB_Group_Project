@@ -84,7 +84,7 @@
         Amount: <?php echo $Amount; ?><br>
         Total Transaction: $<?php echo $Total; ?><br>
         Total Funds in account: $<?php echo $user_data->get_AvailableFunds(); ?><br><br>
-        Click 'Back' to update your order or click 'Submit' to confirm the sell order.
+        Click 'Back' to update your order or click 'Submit' to confirm the <?php echo $orderType; ?> order.
 
         <br>
         <input class="submit" type="submit" name="back" value="Back" onClick="submit">

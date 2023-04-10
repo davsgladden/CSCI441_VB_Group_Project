@@ -7,8 +7,11 @@
 
 if(isset($_SESSION['user_id'])) {
     $user_data = fetchUser($con, "UserID = $_SESSION[user_id]");
-    $commodityArr = fetchCommodity($con);
 }
+/** fetch commodities for dropdown list */
+$commodityArr = fetchCommodity($con);
+
+/** fetch selected commodity for chart */
 $selectedCommodity = new Commodity();
 if (isset($_POST['commodity'])) {
     $selectedCommodity = fetchCommodity($con, "CommodityID = '$_POST[commodity]'");
@@ -183,7 +186,7 @@ if (isset($_POST['commodity'])) {
                         title: {display: true, text: '<?php echo "$selectedCommodity->CommodityName History" ?>'},
                         legend: {display: false},
                         scales: {
-                            yAxes: [{ticks: {min: Math.min(...y)-1, max: Math.max(...y)+1}}], //todo: make dynamic
+                            yAxes: [{ticks: {min: Math.min(...y)-1, max: Math.max(...y)+1}}], //todo: adjust to optimal values
                         }
                     }
                 });
