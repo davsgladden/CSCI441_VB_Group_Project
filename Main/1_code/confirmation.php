@@ -22,8 +22,8 @@
     if (isset($_POST['orderType'])) {
         $orderType = $_POST['orderType'];
     }
-    //todo: enable function call for demo
-    //updateCommodityPrice($con, $commodity->get_CommodityName(),$endpoint,$access_key);
+    //update commodity price before order
+    updateCommodityPrice($con, $commodity->get_CommodityName(),$endpoint,$access_key);
 
     $Price = $commodity->get_CurrentPrice();
     $Total = $Price*$Amount;
