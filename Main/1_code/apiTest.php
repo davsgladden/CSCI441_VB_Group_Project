@@ -4,7 +4,8 @@
     include("controller/systemController.php");
 
     //We will be testing WHEAT
-    $symbol = 'CANO';
+    $symbol = 'WHEAT';
+    $Commodity = fetchCommodity($con, "Symbol = '$symbol'");
     echo('We will be testing '.$symbol.'.');
     echo('<br><br>The latest price data from the API for '.$symbol.' is: $');
 
@@ -12,11 +13,14 @@
     //Initialize CURL:
     $ch = curl_init('https://commodities-api.com/api/'.$endpoint.'?access_key='.$access_key.'');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
     //Store the data:
     $json = curl_exec($ch);
     curl_close($ch);
+
     //Decode JSON response:
     $response = json_decode($json, true);
+
     //Sometimes the API do not return all of the symbols every call, so this action must be skipped or an error will occur
     //test $symbol is set or not
     if (isset($response['data']['rates'][$symbol])){
@@ -31,11 +35,11 @@
     //Update price
     $newCommodity = updateCommodityPrice($con, $symbol,$endpoint,$access_key);
 
-    //Display new data
+    //Display current data
     echo('<br><br>Before the update, the Price of '.$symbol.' in the Database is: $');
-    echo($newCommodity->get_CurrentPrice());
+    echo($Commodity->get_CurrentPrice());
     echo(' and Date: ');
-    echo($newCommodity->get_LastUpdated());
+    echo($Commodity->get_LastUpdated());
     
     echo('<br>Once you refresh the page, the new API price should show that it is
     updated to the Database and new entry in Price History inserted.');
