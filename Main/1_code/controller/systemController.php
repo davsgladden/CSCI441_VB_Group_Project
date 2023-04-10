@@ -221,7 +221,7 @@ function sellOrder($con, TransactionHistory $transaction)
         try {
             $commodityArr = fetchCommodity($con);
             foreach(array_filter($commodityArr) as $commodity){
-                updateCommodityPrice($con,$commodity->Symbol,$endpoint,$access_key);
+                updateCommodityPrice($con,$commodity->get_Symbol(),$endpoint,$access_key);
             }
         }catch (exception $e){
             echo $e->getMessage();
