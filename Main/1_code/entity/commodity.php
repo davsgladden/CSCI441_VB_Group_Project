@@ -105,10 +105,16 @@ function updateCommodity($con, $Commodity,$endpoint,$access_key){
     $response = json_decode($json, true);
 
     $symbol = $Commodity->get_Symbol();
-
-    //Access the value, e.g. WHEAT:
-    $newprice = $response['data']['rates'][$symbol];
-    $convertedPrice = 1/$newprice;
+    
+    //Sometimes the API do not return all of the symbols every call, so this action must be skipped or an error will occur
+    //test $symbol is set or not
+    if (isset($response['data']['rates'][$symbol])){
+      //Access the value, e.g. WHEAT:
+      $newprice = $response['data']['rates'][$symbol];
+      $convertedPrice = 1/$newprice;
+    } else { 
+      $convertedPrice = $Commodity->get_CurrentPrice();
+    }
 
     //update db
     //set sql query

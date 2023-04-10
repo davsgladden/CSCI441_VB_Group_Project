@@ -216,3 +216,14 @@ function sellOrder($con, TransactionHistory $transaction)
         }
     }
 
+    //updates all commodity prices at once
+    function updateAllPrices($con,$endpoint,$access_key){
+        try {
+            $commodityArr = fetchCommodity($con);
+            foreach(array_filter($commodityArr) as $commodity){
+                updateCommodityPrice($con,$commodity->get_Symbol(),$endpoint,$access_key);
+            }
+        }catch (exception $e){
+            echo $e->getMessage();
+        }
+    }

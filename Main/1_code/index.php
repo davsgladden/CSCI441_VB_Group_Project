@@ -10,6 +10,7 @@
         $portfolio = getPortfolioInfo($con, $user_data->get_ID());
     }
 
+    updateAllPrices($con,$endpoint,$access_key);
 
 ?>
 <!DOCTYPE html>
