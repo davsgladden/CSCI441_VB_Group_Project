@@ -13,7 +13,7 @@
             //Read from database
     
             $user = fetchUser($con, "UserName = '$user_name' and Password = '$password'");
-            if($user){
+            if(!is_array($user) && ($user)){
                     if($user->get_Password() === $password) {
                         $_SESSION['user_id'] = $user->get_UserID();
                         date_default_timezone_set('America/Chicago'); //Central timezone
