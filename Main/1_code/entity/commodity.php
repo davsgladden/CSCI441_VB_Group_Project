@@ -70,7 +70,7 @@ function fetchCommodity($con, $filter = "")
             return $commodityArr;
         }
     } catch (Exception $e) {
-        throw $e;
+        echo $e->getMessage();
     }
 }
 
