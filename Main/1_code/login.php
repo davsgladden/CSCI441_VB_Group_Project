@@ -87,7 +87,7 @@
 
             <input id="button" type="submit" value="Login"><br><br>
 
-            <a href="signup.php">Click to Sign Up</a><br><br>
+            <a href="signup.php">Click to Sign Up</a><br>
 
         </form>
     </div>
