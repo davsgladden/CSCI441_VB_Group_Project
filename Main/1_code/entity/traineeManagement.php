@@ -83,6 +83,24 @@ function fetchTraineeManagement($con, $filter = "")
 }
 
 /**
+ * @param $con
+ * @param TraineeManagement $traineeManagement
+ * Inserts TraineeManagement object to TraineeManagement table
+ */
+function insertTraineeManagement($con, TraineeManagement $traineeManagement ){
+    try{
+        $query = "INSERT INTO TraineeManagement (ManagerUserID,TraineeUserID,IsActive) 
+                VALUES ( $traineeManagement->ManagerUserID, 
+                         $traineeManagement->TraineeUserID,
+                         $traineeManagement->IsActive)";
+        mysqli_query($con, $query);
+    } catch (exception $e) {
+        echo $e->getMessage();
+    }
+}
+
+
+/**
  * @param array $res
  * @return TraineeManagement
  */
