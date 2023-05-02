@@ -93,7 +93,7 @@ function fetchTraineeComments($con, $filter = "")
 /**
  * @param $con
  * @param TraineeComments $traineeComments
- * Inserts TraineeManagement object to TraineeManagement table
+ * Inserts TraineeComments object to TraineeComments table
  */
 function insertTraineeComments($con, TraineeComments $traineeComments ){
     try{
