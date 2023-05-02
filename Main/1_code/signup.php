@@ -9,6 +9,7 @@
         //Something was posted
         $user_name = $_POST['user_name'];
         $password = $_POST['password'];
+        $user_type = $_POST['UserTypeID'];
 
         if(!empty($user_name) && !empty($password) && !is_numeric($user_name)){
             //Save to database
@@ -20,7 +21,7 @@
             $newUser->set_password($password);
             $newUser->set_AvailableFunds(10000);
             $newUser->set_IsActive(1);
-            $newUser->set_UserTypeID(1);/**  hardcoded to trainee user. //todo: update to also allow manager users */
+            $newUser->set_UserTypeID($user_type);/**  updated to now change depending on how the user signed up for the site */
             insertUser($con, $newUser);
 
             header("Location: login.php");
@@ -81,6 +82,10 @@
             <input id="text" type="text" name="user_name"><br><br>
             <label for="password">Password:</label>
             <input id="text" type="password" name="password"><br><br>
+            <input type="radio" id="usertype" name ="UserTypeID" value="1">
+            <label for="UserTypeID">Trainee</label>
+            <input type="radio" id="usertype" name ="UserTypeID" value="2">
+            <label for="UserTypeID">Manager</label><br><br>
 
             <input id="button" type="submit" value="Sign Up"><br><br>
 
