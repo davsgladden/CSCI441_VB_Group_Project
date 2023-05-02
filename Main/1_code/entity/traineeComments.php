@@ -91,6 +91,24 @@ function fetchTraineeComments($con, $filter = "")
 }
 
 /**
+ * @param $con
+ * @param TraineeComments $traineeComments
+ * Inserts TraineeComments object to TraineeComments table
+ */
+function insertTraineeComments($con, TraineeComments $traineeComments ){
+    try{
+        $query = "INSERT INTO TraineeComments (ManagerUserID,TraineeUserID, TransactionHistoryID, Comment) 
+                VALUES ( $traineeComments->ManagerUserID, 
+                         $traineeComments->TraineeUserID,
+                         $traineeComments->TransactionHistoryID,
+                        '$traineeComments->Comment')";
+        mysqli_query($con, $query);
+    } catch (exception $e) {
+        echo $e->getMessage();
+    }
+}
+
+/**
  * @param array $res
  * @return TraineeComments
  */

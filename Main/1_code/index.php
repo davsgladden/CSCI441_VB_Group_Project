@@ -55,7 +55,7 @@
 
     <br>
     <p>Hello, <?php echo $user_data->get_UserName(); ?></p>
-    <p>Current portfolio infomation for your account is:</p>
+    <p>Current portfolio information for your account is:</p>
         <!--todo: displayed for testing. Revisit for actual display -->
        <div>
         <table class="center">
