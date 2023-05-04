@@ -50,12 +50,29 @@
             }
         }
 
-    //todo: update shell function with implementation code
-    function getPortfolioHistory($con, $id) {
+    /**  Pull transactionHistory and comment data **/
+    function getNewsFeedHistory($con,$id){
         try {
-
-        }
-        catch (Exception $e) {
+            $query = "SELECT
+                        DISTINCT 
+                            UserName, Hist.TransactionHistoryID,
+                            CommodityName, Amount, Price, TransactionPrice, TransactionDate, OrderType,
+                            Case when Com.Comment is not null then 'Y' else 'N' end as CommentExists
+                        FROM transactionHistory Hist
+                            left join traineeComments Com
+                            on Hist.transactionHistoryID = Com.transactionHistoryID
+                                and Hist.UserID = Com.TraineeUserID
+                                    left join Commodity C
+                                    on Hist.CommodityID = C.CommodityID
+                                        left join Users U
+                                        on Hist.UserID = U.ID
+                        Where Hist.UserID = '$id'
+                        Order by TransactionDate, TransactionHistoryID";
+            $result = mysqli_query($con, $query);
+            if($result && mysqli_num_rows($result) > 0){
+                return mysqli_fetch_all($result, MYSQLI_ASSOC);
+            }
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
     }

@@ -86,7 +86,7 @@ function fetchTraineeComments($con, $filter = "")
             return $traineeCommentsArr;
         }
     } catch (Exception $e) {
-        throw $e;
+        echo $e->getMessage();
     }
 }
 
@@ -98,7 +98,7 @@ function fetchTraineeComments($con, $filter = "")
 function insertTraineeComments($con, TraineeComments $traineeComments ){
     try{
         $query = "INSERT INTO TraineeComments (ManagerUserID,TraineeUserID, TransactionHistoryID, Comment) 
-                VALUES ( $traineeComments->ManagerUserID, 
+                VALUES ( NullIf($traineeComments->ManagerUserID,0), 
                          $traineeComments->TraineeUserID,
                          $traineeComments->TransactionHistoryID,
                         '$traineeComments->Comment')";
