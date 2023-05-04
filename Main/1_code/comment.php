@@ -115,7 +115,7 @@
          <?php $newComment = new TraineeComments();
             $newComment->set_TraineeUserID($transactionHistory->get_UserID());
             $newComment->set_TransactionHistoryID($transactionHistory->get_TransactionHistoryID());
-            $newComment->set_ManagerUserID(0);?>
+            $newComment->set_ManagerUserID(0); //TODO update to also populate with managerID if user is a manager ?>
         <input type='hidden' name="var" id="var" value='<?php echo json_encode($newComment); ?>'>
     </form>
 </body>
