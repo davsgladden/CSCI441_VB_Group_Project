@@ -10,9 +10,6 @@
         $newsFeed = getNewsFeedHistory($con,$user_data->get_ID());
     }
 
-
-
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -83,6 +80,7 @@
         ?>
     </form>
     </table>
+    <!--TODO: adjust iframe to display to the right of history table-->
     <iframe width="700" height ="425" class="center" name="myiFrame" id="myiFrame" ></iframe>
 </body>
 </html>
