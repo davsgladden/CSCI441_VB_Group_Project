@@ -1,21 +1,21 @@
 <?php
-    session_start();
+session_start();
 
-    include("connection.php");
-    include("functions.php");
-    include("controller/systemController.php");
+include("connection.php");
+include("functions.php");
+include("controller/systemController.php");
 
-if(isset($_SESSION['user_id'])) {
-    $user_data = fetchUser($con, "UserID = $_SESSION[user_id]");
-}
-/** fetch commodities for dropdown list */
-$commodityArr = fetchCommodity($con);
+    if (isset($_SESSION['user_id'])) {
+        $user_data = fetchUser($con, "UserID = $_SESSION[user_id]");
+    }
+    /** fetch commodities for dropdown list */
+    $commodityArr = fetchCommodity($con);
 
-/** fetch selected commodity for chart */
-$selectedCommodity = new Commodity();
-if (isset($_POST['commodity'])) {
-    $selectedCommodity = fetchCommodity($con, "CommodityID = '$_POST[commodity]'");
-}
+    /** fetch selected commodity for chart */
+    $selectedCommodity = new Commodity();
+    if (isset($_POST['commodity'])) {
+        $selectedCommodity = fetchCommodity($con, "CommodityID = '$_POST[commodity]'");
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -23,16 +23,16 @@ if (isset($_POST['commodity'])) {
     <title>Orders</title>
 </head>
 <style>
-    p{
+    p {
         padding: 15px;
         font-size: 20px;
     }
 
-    .hello{
+    .hello {
         font-family: Verdana, Arial;
     }
 
-    #tables{
+    #tables {
         display: flex;
         align-items: flex-start;
         flex-direction: row;
@@ -40,20 +40,21 @@ if (isset($_POST['commodity'])) {
         padding: 15px;
         flex-grow: 1;
         flex-wrap: wrap;
-        
+
     }
-    #forms{
+
+    #forms {
         display: flex;
         align-items: flex-start;
         flex-direction: row;
         justify-content: left;
         padding: 15px;
         flex-grow: 1;
-        
-    }
-    
 
-    table,chart {
+    }
+
+
+    table, chart, CanvasJS {
         font-family: arial, sans-serif;
         border-collapse: collapse;
     }
@@ -68,29 +69,29 @@ if (isset($_POST['commodity'])) {
         cursor: pointer;
         line-height: 1.1;
         border: 1px solid grey;
-        
-}
+    }
+
     td, th {
         border: 1px solid #dddddd;
         text-align: left;
         padding: 8px;
         font-family: Verdana, Arial;
     }
-    table{
+
+    table {
         width: 65%
     }
 
     tr:nth-child(even) {
         background-color: #dddddd;
     }
+
     .center {
         display: inline-block;
         align-items: left;
         width: 50%;
         font-family: Verdana, Arial;
     }
-
-    
 
     .submit {
         background-color: #549bf7; /* Black */
@@ -102,11 +103,13 @@ if (isset($_POST['commodity'])) {
         font-size: 18px;
         font-family: Verdana, Arial;
         cursor: pointer !important;
-}
-    .submit:hover{
+    }
+
+    .submit:hover {
         background-color: #5A5A5A;
     }
-    .button{
+
+    .button {
         background-color: #549bf7; /* Black */
         border: grey;
         color: white;
@@ -118,56 +121,81 @@ if (isset($_POST['commodity'])) {
         font-family: Verdana, Arial;
     }
 
-    .button a{
+    .button a {
         color: white;
     }
-    .button:hover{
+
+    .button:hover {
         background-color: #5A5A5A;
     }
-    .break {
-    flex-basis: 100%;
-    height: 0;
+
+    #container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
 
+    #container div {
+        padding: 2px;
+        margin: 10px;
+    }
+
+    .top-left, .top-right {
+        flex: 1 1 0;
+    }
+
+    .bottom {
+        flex: 100%;
+        order: 3;
+    }
 </style>
 <body>
-    <?php include_once("navbar.php");?>
+<?php include_once("navbar.php"); ?>
 
-    <br>
-    <p class="hello">Hello, <?php echo $user_data->get_UserName(); ?>.<br>
-    <div id="forms">
-        <form class= "center" method="post" action="">
-            <select id="commodity" name="commodity">
-                <option value="" selected="selected">Choose a commodity</option>
-                <?php
-                    // Iterating through the Commodity object array
-                    foreach(array_filter($commodityArr) as $commodity){
-                        echo "<option value='$commodity->CommodityID'>$commodity->Symbol</option>";
-                    }
-                ?>
-            </select>
-            <input class="submit" id="submitChart" type="submit" value="Submit";>
-        </form>
-        <form method="post">
-                <button class="button"><a href="ticket.php" target="myiFrame">Trade</a></button>
-        </form>
+<br>
+<p class="hello">Hello, <?php echo $user_data->get_UserName(); ?>.<br>
+<div id="forms">
+    <form class="center" method="post" action="">
+        <select id="commodity" name="commodity">
+            <option value="" selected="selected">Choose a commodity</option>
+            <?php
+            // Iterating through the Commodity object array
+            foreach (array_filter($commodityArr) as $commodity) {
+                echo "<option value='$commodity->CommodityID'>$commodity->Symbol</option>";
+            }
+            ?>
+        </select>
+        <input class="submit" id="submitChart" type="submit" value="Submit" ;>
+    </form>
+    <form method="post">
+        <button class="button"><a href="ticket.php" target="myiFrame">Create Trade</a></button>
+    </form>
+</div>
+<br>
+<!--containers for chart, order, table-->
+<div></div>
+<div id="container">
+    <div class="top-left">
+        <div id="chartContainer" style="width:100%;max-width:inherit;height:500px"></div>
     </div>
-    <br>
+    <div class="top-right">
+        <iframe style="width:100%;max-width:700px" height="600px" class="center" name="myiFrame" id="myiFrame"></iframe>
+    </div>
     <!--table of current prices -->
-    <div id="tables">
+    <div class="bottom" id="tables">
         <table>
             <?php
             echo '<th>Symbol</th>
               <th>Commodity Name</th>
               <th>Current Price</th>';
             if ($commodityArr > 1)
-               // $commodity = new Commodity();
-                foreach(array_filter($commodityArr) as $commodity){
+                // $commodity = new Commodity();
+                foreach (array_filter($commodityArr) as $commodity) {
                     echo '
                     <tr>
-                        <td>'.$commodity->get_Symbol().'</td>
-                        <td>'.$commodity->get_CommodityName().'</td>
-                        <td>'.$commodity->get_CurrentPrice().'</td>
+                        <td>' . $commodity->get_Symbol() . '</td>
+                        <td>' . $commodity->get_CommodityName() . '</td>
+                        <td>' . $commodity->get_CurrentPrice() . '</td>
                     </tr>
                     ';
                 }
@@ -178,43 +206,47 @@ if (isset($_POST['commodity'])) {
             if (!is_array($selectedCommodity) && $selectedCommodity->CommodityID > 0) {
                 $commodityHistory = fetchCommodityHistory($con, "CommodityID = '.$selectedCommodity->CommodityID.'");
 
+                $data = [];
                 foreach (array_filter($commodityHistory) as $history) {
-                    $xValues[] = substr($history->get_DateCreated(), 0, 10);
+                    $xValues[] = $history->get_DateCreated();
                     $yValues[] = $history->get_Price();
                 }
             }
             ?>
 
             <?php //plotting the chart  ?>
-            <script src="//code.jquery.com/jquery-1.9.1.js"></script>
-            <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-            <canvas id="myChart" class="center" style="width:100%;max-width:700px"></canvas>
-            <script>
-                const x = <?php echo json_encode($xValues) ?>;
-                const y = <?php echo json_encode($yValues) ?>;
-            
-                new Chart("myChart", {
-                    type: "line",
-                    data: {
-                        labels: x,
-                        datasets: [{
-                            fill: true,
-                            lineTension: 0,
-                            backgroundColor: "rgba(0,0,255,1.0)",
-                            borderColor: "rgba(0,0,255,0.1)",
-                            data: y
+            <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+            <script type="text/javascript" src="https://cdn.canvasjs.com/canvasjs.stock.min.js"></script>
+            <script type="text/javascript">
+                window.onload = function () {
+                    var dataPoints = [];
+
+                    var stockChart = new CanvasJS.StockChart("chartContainer", {
+                        title: {
+                            text: "<?php echo "$selectedCommodity->CommodityName History" ?>"
+                        },
+                        charts: [{
+                            data: [{
+                                type: "area",
+                                dataPoints: dataPoints
+                            }]
                         }]
-                    },
-                    options: {
-                        title: {display: true, text: '<?php echo "$selectedCommodity->CommodityName History" ?>'},
-                        legend: {display: false},
-                        scales: {
-                            yAxes: [{ticks: {min: Math.min(...y)-1, max: Math.max(...y)+1}}], //todo: adjust to optimal values
-                        }
+                    });
+
+                    var data = [];
+                    var dataSeries = {type: "area"};
+                    const x2 = <?php echo json_encode($xValues) ?>;
+                    const y2 = <?php echo json_encode($yValues) ?>;
+                    for (var i = 0; i < y2.length; i += 1) {
+                        dataPoints.push({x: new Date(x2[i]), y: Number(y2[i])});
                     }
-                });
-           </script>
-    <iframe width="700" height ="315" class="center" name="myiFrame" id="myiFrame" ></iframe>
+                    dataSeries.dataPoints = dataPoints;
+                    data.push(dataSeries);
+
+                    stockChart.render();
+                };
+            </script>
         </table>
+    </div>
 </body>
 </html>
