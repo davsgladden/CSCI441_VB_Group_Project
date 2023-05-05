@@ -79,10 +79,10 @@
                 echo "<option value='$commodity->CommodityName'>$commodity->Symbol</option>";
             }
             ?>
-        </select><br>
+        </select><br><br>
         <label for="amount">Amount:  </label>
         <input type="text" id="amount" name="amount">
-        <br>
+        <br><br>
         <input class="submit" type="submit" name="submit" value="Preview Order">
     </form>
 </body>
