@@ -17,14 +17,14 @@
     <title>Training</title>
 </head>
 <style>
-    ul.training {
+    .training {
         margin: 10px;
         padding: 0;
         list-style: none;
         display: grid;
         gap: 1rem;
     }
-    li {
+    .training li {
         display: grid;
         grid-template-columns: 0 1fr;
         gap: 1.75em;
@@ -32,10 +32,13 @@
         font-size: 1.5rem;
         line-height: 1.25;
     }
-    ul li::before {
+    .training li::before {
         content: attr(data-icon);
         font-size: 1.25em;
     }
+
+
+
 
 </style>
 <body>

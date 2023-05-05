@@ -18,10 +18,12 @@
 <style>
     h2{
         padding: 15px;
+        font-family: Verdana, Arial;
     }
     p{
         padding: 15px;
         font-size: 20px;
+        font-family: Verdana, Arial;
     }
     table, th, td {
         padding: 15px;
@@ -29,6 +31,7 @@
         font-size: 20px;
         width: 35%;
         text-align: center;
+        font-family: Verdana, Arial;
     }
     table{
         border: 1px solid;
@@ -43,6 +46,13 @@
         text-decoration: none;
         font-size: 18px;
         margin-left: 15px;
+        font-family: Verdana, Arial;
+    }
+    .button a {
+        color: white;
+    }
+    .button:hover{
+        background-color: #5A5A5A;
     }
 </style>
 <body>
