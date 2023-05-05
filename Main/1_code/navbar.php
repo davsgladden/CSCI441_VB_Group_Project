@@ -8,19 +8,44 @@
   border: 2px grey;
   box-sizing: border-box;
   text-decoration: none;
-  color: black;
   }
   
 h1 {
   font-size: 50px;
-  background-color: #549bf7;
-  padding: 20px;
-  margin-right: 100px;
+  color: gold;
+  font-family: Verdana, Arial;
 }
+
+#header{
+  list-style-type: none;
+  overflow: hidden;
+  top: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: left;
+  padding-bottom: 10px;
+  min-width: 1000px;
+}
+
+.headertext{
+  display: inline-block;
+  text-align: center;
+
+}
+
+.logo{
+  display: inline-block;
+  width: 100px;
+  height: 125px;
+  background-image:url("media/logo2.png");
+  background-size: cover;
+}
+
+
 #navbar {
   background-color: #549bf7;
-  font-size: 25px;
-  color: black;
+  font-size: 20px;
+  color: white;
   list-style-type: none;
   margin: 0px;
   padding: 0 8px;
@@ -31,35 +56,65 @@ h1 {
   display: flex;
   align-items: flex-start;
   justify-content: left;
+  min-width: 1000px;
   }
   
   
 .navbarlist {
+  background-color: #549bf7;
   display: inline-block;
   margin: 10px;
-  color: black;
   text-align: center;
-  padding: 20px 50px;
+  padding: 10px 30px;
   border: 2px grey;
-  box-shadow: 0 0 10px 0 black;
+  font-family: Verdana, Arial;
   }
+
+  li a {
+    color: #f0ffff;
+  }
+
+  li a.active {
+    color: black;
+  }
+
+  .active{
+    color: black;
+  }
+
+  .navbarlist:hover{
+    box-shadow: inset 0px -2px 0px 0px black;
+  }
+
   .logout{
+        float: right;
         display: inline-block;
-        margin-left: 50px;
+        margin: 10px;
         text-align: right;
         list-style-type: none;
         font-size: 20px;
+        font-family: Verdana, Arial;
+        padding: 10px 30px;
     }
+    .logout:hover{
+    box-shadow: inset 0px -2px 0px 0px black;
+  }
 </style>
 </head>
 <body>
+<div id= "header">
+  <ul>
+      <li class = "logo"></li>
+      <li class = "headertext"><h1>AgriCom Training</h1></li>
+  </ul>
+</div>
 
 <div id="navbar">
- <h1>AgriCom Training</h1>
+ 
  <nav>
-    <ul >
+    <ul  >
         <li class="navbarlist"><a href="index.php">Portfolio</a></li>
-        <li class="navbarlist"><a href="orders.php">Orders</a></li>
+        <li class="navbarlist" ><a href="orders.php">Orders</a></li>
         <li class="navbarlist"><a href="newsfeed.php">Newsfeed</a></li>
         <li class="navbarlist"><a href="training.php">Training</a></li>
         <li class="navbarlist"><a href="account.php">Account</a></li>

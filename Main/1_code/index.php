@@ -22,6 +22,7 @@
     p{
         padding: 15px;
         font-size: 20px;
+        font-family: Verdana, Arial;
     }
 
     table {
@@ -34,6 +35,7 @@
       border: 1px solid #dddddd;
       text-align: left;
       padding: 8px;
+      font-family: Verdana, Arial;
     }
 
     tr:nth-child(even) {

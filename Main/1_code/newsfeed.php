@@ -25,6 +25,7 @@
         border: 1px solid #dddddd;
         text-align: left;
         padding: 8px;
+        font-family: Verdana, Arial;
     }
 
     tr:nth-child(even) {
@@ -38,12 +39,14 @@
         text-align: center;
         text-decoration: none;
         font-size: 12px;
+        font-family: Verdana, Arial;
     }
     .center {
         display: inline-block;
         align-items: left;
         width: 50%;
     }
+
 </style>
 <body>
 <?php include_once("navbar.php");?>
@@ -82,5 +85,6 @@
     </table>
     <!--TODO: adjust iframe to display to the right of history table-->
     <iframe width="700" height ="425" class="center" name="myiFrame" id="myiFrame" ></iframe>
+        </div>
 </body>
 </html>
