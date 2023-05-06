@@ -38,7 +38,7 @@
         #button{
         background-color: #549bf7; /* Black */
         border: grey;
-        color: black;
+        color: white;
         padding: 10px 24px;
         text-align: center;
         text-decoration: none;
