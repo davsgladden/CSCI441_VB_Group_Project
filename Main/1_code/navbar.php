@@ -74,12 +74,9 @@ h1 {
     color: #f0ffff;
   }
 
-  li a.active {
-    color: black;
-  }
-
-  .active{
-    color: black;
+  nav a.current {
+  color: black;
+  box-shadow: inset 0px -2px 0px 0px black;
   }
 
   .navbarlist:hover{
@@ -108,6 +105,18 @@ h1 {
       <li class = "headertext"><h1>AgriCom Training</h1></li>
   </ul>
 </div>
+
+<!--script to add active class to current navigation button -->
+<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script>
+$(function(){
+  $('a').each(function() {
+    if ($(this).prop('href') == window.location.href) {
+      $(this).addClass('current');
+    }
+  });
+});
+</script>
 
 <div id="navbar">
  
