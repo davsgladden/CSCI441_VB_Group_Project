@@ -12,7 +12,13 @@
     if($user_data->get_UserTypeID() === '2'){?>
         <style type="text/css">
         #manager{
-         display:inline;
+            display: flex;
+            align-items: flex-start;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: left;
+            padding: 15px;
+            flex-grow: 1;
          }</style>
     <?php } else {?>
             <style type="text/css">
@@ -105,16 +111,16 @@
         </tr>
 
     </table>
-    <form method="update">
+        <form method="update">
+            <button class="button"><a href="updatePassword.php" target="myiFrame">Change Password</a></button>
+        </form>
+        <iframe width="700" height ="315" class="center" name="myiFrame" id="myiFrame" ></iframe>
+        <div id="manager">
+        <form method="update">
         <button class="button"><a href="addTrainees.php" target="myManageriFrame">Add Trainees</a></button>
         </form>
-        <iframe width="800" height ="315" class="center" name="myManageriFrame" id="myiFrame" ></iframe>
+        <iframe width="650" height ="315" class="center" name="myManageriFrame" id="myiFrame" ></iframe>
 
-        <form method="update">
-                <button class="button"><a href="updatePassword.php" target="myiFrame">Change Password</a></button>
-        </form>
-
-    <iframe width="800" height ="315" class="center" name="myiFrame" id="myiFrame" ></iframe>
     <section>
         <h2>Managed Trainees:</h2>
     <ul id="traineeTable">
@@ -140,6 +146,7 @@
     ?>
     </ul>
 </section>
+</div>
     </div>
 </body>
 </html>
