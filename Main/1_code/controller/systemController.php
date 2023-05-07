@@ -226,11 +226,11 @@ function sellOrder($con, TransactionHistory $transaction)
 }
 
     //get latest price from API, updates db with new price, and insert new price history in db
-    function updateCommodityPrice($con, $symbol,$endpoint,$access_key){
+    function updateCommodityPrice($con, $symbol){
         try {
             $Commodity = fetchCommodity($con, "Symbol='$symbol'");
             insertCommodityHistory($con, $Commodity); //function created in history entity
-            updateCommodity($con, $Commodity,$endpoint,$access_key); //function created in commodity entity
+            updateCommodity($con, $Commodity); //function created in commodity entity
             return $Commodity;
         }catch (exception $e){
             echo $e->getMessage();
@@ -238,11 +238,22 @@ function sellOrder($con, TransactionHistory $transaction)
     }
 
     //updates all commodity prices at once
-    function updateAllPrices($con,$endpoint,$access_key){
+    function updateAllPrices($con){
         try {
             $commodityArr = fetchCommodity($con);
+            $response = apiCall();
             foreach(array_filter($commodityArr) as $commodity){
-                updateCommodityPrice($con,$commodity->get_Symbol(),$endpoint,$access_key);
+                $symbol = $commodity->get_Symbol();
+                if (isset($response[$symbol])){
+                    //Access the value, e.g. WHEAT:
+                    $newprice = $response[$symbol];
+                    $convertedPrice = 1/$newprice;
+                    //update db
+                    //set sql query
+                    $query = "UPDATE Commodity SET CurrentPrice = '".$convertedPrice."', LastUpdated = NOW() WHERE Symbol = '".$symbol."'";
+                    //excecute query to update current price information and date in db
+                    mysqli_query($con, $query);
+                } else {}
             }
         }catch (exception $e){
             echo $e->getMessage();

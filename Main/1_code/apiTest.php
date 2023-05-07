@@ -3,6 +3,9 @@
     include("connection.php");
     include("controller/systemController.php");
 
+    $endpoint = 'latest';
+    $access_key = '3uiunaq72cjeo2y05yowutzu756r9tuo9h81urdj3fvgm4mpqdhbrc85d8dk';
+    
     //We will be testing WHEAT
     $symbol = 'WHEAT';
     $Commodity = fetchCommodity($con, "Symbol = '$symbol'");
@@ -33,7 +36,7 @@
     echo($convertedPrice);
 
     //Update price
-    $newCommodity = updateCommodityPrice($con, $symbol,$endpoint,$access_key);
+    $newCommodity = updateCommodityPrice($con, $symbol);
 
     //Display current data
     echo('<br><br>Before the update, the Price of '.$symbol.' in the Database is: $');

@@ -90,27 +90,16 @@ function getCommodities(array $res): Commodity
 }
 
 //enter commodity symbol in parameter and returns current price
-function updateCommodity($con, $Commodity,$endpoint,$access_key){
+function updateCommodity($con, $Commodity){
   try {
-    //get new price
-    //Initialize CURL:
-    $ch = curl_init('https://commodities-api.com/api/'.$endpoint.'?access_key='.$access_key.'');
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-    //Store the data:
-    $json = curl_exec($ch);
-    curl_close($ch);
-
-    //Decode JSON response:
-    $response = json_decode($json, true);
-
+    $response = apiCall();
     $symbol = $Commodity->get_Symbol();
     
     //Sometimes the API do not return all of the symbols every call, so this action must be skipped or an error will occur
     //test $symbol is set or not
-    if (isset($response['data']['rates'][$symbol])){
+    if (isset($response[$symbol])){
       //Access the value, e.g. WHEAT:
-      $newprice = $response['data']['rates'][$symbol];
+      $newprice = $response[$symbol];
       $convertedPrice = 1/$newprice;
     } else { 
       $convertedPrice = $Commodity->get_CurrentPrice();
