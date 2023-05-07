@@ -66,8 +66,8 @@
                                     on Hist.CommodityID = C.CommodityID
                                         left join Users U
                                         on Hist.UserID = U.ID
-                        Where Hist.UserID = '$id'
-                        Order by TransactionDate, TransactionHistoryID";
+                        Where Hist.UserID in ($id)
+                        Order by TransactionDate desc, TransactionHistoryID";
             $result = mysqli_query($con, $query);
             if($result && mysqli_num_rows($result) > 0){
                 return mysqli_fetch_all($result, MYSQLI_ASSOC);

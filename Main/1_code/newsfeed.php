@@ -4,12 +4,29 @@
     include("connection.php");
     include("functions.php");
     include("controller/systemController.php");
-
+    $id = "";
     if(isset($_SESSION['user_id'])) {
         $user_data = fetchUser($con, "UserID = $_SESSION[user_id]");
-        $newsFeed = getNewsFeedHistory($con,$user_data->get_ID());
-    }
 
+        if($user_data->get_UserTypeID() == 1) {
+         $newsFeed = getNewsFeedHistory($con, $user_data->get_ID());
+     } else if($user_data->get_UserTypeID() == 2) {
+         $traineeManagementData = fetchTraineeManagement($con, "ManagerUserID = $user_data->ID");
+
+         if (is_array($traineeManagementData)) {
+             foreach (array_filter($traineeManagementData) as $trainee) {
+                 if($id == "") {
+                     $id .= $trainee->get_TraineeUserID();
+                 } else {
+                     $id .= ",".$trainee->get_TraineeUserID();
+                 }
+             }
+         } else {
+             $id = $traineeManagementData->get_TraineeUserID();
+         }
+         $newsFeed = getNewsFeedHistory($con, $id);
+      }
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -20,6 +37,9 @@
     p{
         padding: 15px;
         font-size: 20px;
+    }
+    table {
+        width: 100%;
     }
     td, th {
         border: 1px solid #dddddd;
@@ -45,6 +65,21 @@
         display: inline-block;
         align-items: left;
         width: 50%;
+        font-family: Verdana, Arial;
+    }
+    #container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    #container div {
+        padding: 2px;
+        margin: 2px;
+    }
+
+    .top-left, .top-right {
+        flex: 1 0;
     }
 
 </style>
@@ -54,9 +89,10 @@
 <br>
 <p>Hello, <?php echo $user_data->get_UserName(); ?></p>
 
-<div>
-    <table class="center">
-    <form method="post" action="comment.php" target="myiFrame">
+<div id="container">
+    <div class="top-left" style="width:100%;max-width:inherit;height:500px">
+        <table class="center" style="width:100%;max-width:inherit;height:500px">
+        <form method="post" action="comment.php" target="myiFrame">
         <?php
         echo '<th>History</th>
               <th>Comment(s) exists</th>
@@ -83,8 +119,11 @@
         ?>
     </form>
     </table>
+    </div>
     <!--TODO: adjust iframe to display to the right of history table-->
-    <iframe width="700" height ="425" class="center" name="myiFrame" id="myiFrame" ></iframe>
-        </div>
+    <div class="top-right">
+        <iframe style="width:100%;max-width:inherit;height:500px" class="center" name="myiFrame" id="myiFrame" ></iframe>
+    </div>
+    </div>
 </body>
 </html>
