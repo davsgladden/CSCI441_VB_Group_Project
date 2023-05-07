@@ -57,15 +57,25 @@
         padding: 0.25em 0.5em;
         font-size: 1.25rem;
     }
-
     .submit {
-        background-color: #549bf7; /* Aqua */
+        background-color: #549bf7; /* Black */
         border: grey;
-        color: black;
+        color: white;
         padding: 10px 24px;
         text-align: center;
         text-decoration: none;
-        font-size: 12px;
+        font-size: 18px;
+        font-family: Verdana, Arial;
+        cursor: pointer !important;
+        border-radius: 0.25em;
+    }
+    .center {
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 20px;
+    }
+    .submit:hover {
+        background-color: #5A5A5A;
     }
 
 </style>

@@ -30,7 +30,12 @@
         text-align: center;
         text-decoration: none;
         font-size: 18px;
+        cursor: pointer !important;
     }
+    .submit:hover {
+        background-color: #5A5A5A;
+    }
+
 
     select {
         width: 75%;
@@ -77,13 +82,7 @@
         </select>
         <br><br>
 
-        <script>
-                function clickAlert() {
-                parent.location.reload();
-            }
-            </script>
-
-        <input onClick="clickAlert();" class="submit" type="submit" name="submit" value="Add Trainee">
+        <input class="submit" type="submit" name="submit" value="Add Trainee">
         <?php $addTrainee = new TraineeManagement();
             $addTrainee->set_ManagerUserID($user_data->get_ID());
             $addTrainee->set_isActive(1);?>

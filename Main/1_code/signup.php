@@ -51,9 +51,16 @@
             padding: 10px;
             width: 100px;
             color: white;
-            background-color: grey;
+            background-color: #549bf7;
             border: none;
             text-align: center;
+            font-family: Verdana, Arial;
+            font-size: 15px;
+            border-radius: 0.25em;
+            cursor: pointer !important;
+        }
+        #button:hover {
+            background-color: #5A5A5A;
         }
         .header{
             background-color: #549bf7;
@@ -62,6 +69,8 @@
             height: 50px;
             padding: 20px;
             text-align: center;
+            color: gold;
+            font-family: Verdana, Arial;
         }
         #box{
             background-color: white;
@@ -77,10 +86,10 @@
     </div>
     <div id="box">
         <form method="post">
-            <div style="font-size: 20px; margin: 10px;">Sign Up</div>
-            <label for="user_name">Username:</label>
+            <div style="font-size: 20px; margin: 10px;">Create User Login</div>
+            <label for="user_name">Create Username:</label>
             <input id="text" type="text" name="user_name"><br><br>
-            <label for="password">Password:</label>
+            <label for="password">Create Password:</label>
             <input id="text" type="password" name="password"><br><br>
             <input type="radio" id="usertype" name ="UserTypeID" value="1">
             <label for="UserTypeID">Trainee</label>
