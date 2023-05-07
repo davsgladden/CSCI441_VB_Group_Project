@@ -28,6 +28,10 @@
         font-size: 20px;
         font-family: Verdana, Arial;
     }
+    h2{
+        padding: 15px;
+        font-family: Verdana, Arial;
+    }
 
     table {
       font-family: arial, sans-serif;
@@ -60,7 +64,8 @@
 </style>
 <body>
     <?php include_once("navbar.php");?>
-
+    <br>
+    <h2>Portfolio Page</h2>
     <!--Display for trainee users-->
     <?php if($user_data->get_UserTypeID() == 1) { ?>
         <p><b>Current portfolio information for your account is:</b></p>
