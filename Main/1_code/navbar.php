@@ -57,6 +57,7 @@ h1 {
   align-items: flex-start;
   justify-content: left;
   min-width: 1000px;
+  height: 65px;
   }
   
   

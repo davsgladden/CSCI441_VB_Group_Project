@@ -51,9 +51,11 @@
             padding: 10px;
             width: 100px;
             color: white;
-            background-color: grey;
+            background-color: #549bf7;
             border: none;
             text-align: center;
+            font-family: Verdana, Arial;
+            font-size: 15px;
         }
         .header{
             background-color: #549bf7;
@@ -62,6 +64,8 @@
             height: 50px;
             padding: 20px;
             text-align: center;
+            color: gold;
+            font-family: Verdana, Arial;
         }
         #box{
             background-color: white;
