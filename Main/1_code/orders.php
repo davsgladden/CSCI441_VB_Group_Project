@@ -31,7 +31,10 @@ include("controller/systemController.php");
     .hello {
         font-family: Verdana, Arial;
     }
-
+    h2{
+        padding: 15px;
+        font-family: Verdana, Arial;
+    }
     #tables {
         display: flex;
         align-items: flex-start;
@@ -164,7 +167,7 @@ include("controller/systemController.php");
 <?php include_once("navbar.php"); ?>
 
 <br>
-<p class="hello">Hello, <?php echo $user_data->get_UserName(); ?>.<br>
+<h2>Orders Page</h2>
 <p class="hello">Please select a commodity in the list below to view history chart, or use the Create Trade button to create an order ticket.</p>
 <div id="forms">
     <form class="center" method="post" action="">

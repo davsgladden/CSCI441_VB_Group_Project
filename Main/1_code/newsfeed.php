@@ -96,14 +96,19 @@
     .top-left, .top-right {
         flex: 1 0;
     }
-
+    .hello {
+        font-family: Verdana, Arial;
+    }
+    h2{
+        padding: 15px;
+        font-family: Verdana, Arial;
+    }
 </style>
 <body>
 <?php include_once("navbar.php");?>
 
 <br>
-<p>Hello, <?php echo $user_data->get_UserName(); ?></p>
-
+<h2>Newsfeed Page</h2>
 <div id="container">
     <div class="top-left" style="width:100%;max-width:inherit;height:100%;max-height:inherit;">
         <table class="center" style="width:100%;max-width:inherit;height:100%;max-height:inherit;">
