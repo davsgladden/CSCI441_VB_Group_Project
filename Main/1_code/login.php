@@ -56,6 +56,11 @@
             text-align: center;
             font-family: Verdana, Arial;
             font-size: 15px;
+            border-radius: 0.25em;
+            cursor: pointer !important;
+        }
+        #button:hover {
+            background-color: #5A5A5A;
         }
         .header{
             background-color: #549bf7;

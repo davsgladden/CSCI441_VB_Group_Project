@@ -26,3 +26,14 @@ $traineeManage->set_TraineeUserID($trainee);
             echo $e->getMessage();
         }
 ?>
+<script>
+    function clickAlert() {
+        parent.location.reload();
+    }
+</script>
+<!DOCTYPE html>
+<html>
+<body onload="clickAlert();">
+
+</body>
+</html>
