@@ -51,21 +51,47 @@
     tr:nth-child(even) {
         background-color: #dddddd;
     }
-    .submit {
-        background-color: #549bf7; /* Black */
-        border: grey;
-        color: black;
-        padding: 10px 24px;
-        text-align: center;
-        text-decoration: none;
-        font-size: 12px;
-        font-family: Verdana, Arial;
-    }
     .center {
         display: inline-block;
         align-items: left;
         width: 50%;
         font-family: Verdana, Arial;
+    }
+
+    .submit {
+        background-color: #549bf7; /* Black */
+        border: grey;
+        color: white;
+        padding: 5px 5px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 14px;
+        font-family: Verdana, Arial;
+        cursor: pointer !important;
+    }
+
+    .submit:hover {
+        background-color: #5A5A5A;
+    }
+
+    .button {
+        background-color: #549bf7; /* Black */
+        border: grey;
+        color: white;
+        padding: 10px 24px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 18px;
+        margin-left: 400px;
+        font-family: Verdana, Arial;
+    }
+
+    .button a {
+        color: white;
+    }
+
+    .button:hover {
+        background-color: #5A5A5A;
     }
     #container {
         display: flex;
@@ -90,8 +116,8 @@
 <p>Hello, <?php echo $user_data->get_UserName(); ?></p>
 
 <div id="container">
-    <div class="top-left" style="width:100%;max-width:inherit;height:500px">
-        <table class="center" style="width:100%;max-width:inherit;height:500px">
+    <div class="top-left" style="width:100%;max-width:inherit;height:100%;max-height:inherit;">
+        <table class="center" style="width:100%;max-width:inherit;height:100%;max-height:inherit;">
         <form method="post" action="comment.php" target="myiFrame">
         <?php
         echo '<th>History</th>
@@ -122,7 +148,7 @@
     </div>
     <!--TODO: adjust iframe to display to the right of history table-->
     <div class="top-right">
-        <iframe style="width:100%;max-width:inherit;height:500px" class="center" name="myiFrame" id="myiFrame" ></iframe>
+        <iframe style="width:100%;max-width:inherit;height:100%;max-height:inherit;" class="center" name="myiFrame" id="myiFrame" ></iframe>
     </div>
     </div>
 </body>
