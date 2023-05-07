@@ -77,12 +77,21 @@ include("controller/systemController.php");
         padding: 8px;
         font-family: Verdana, Arial;
     }
+    caption {
+        border: 1px solid #bdbdbd;
+        text-align: center;
+        padding: 8px;
+        font-weight: bold;
+        font-family: Verdana, Arial;
+        color: white;
+        background-color: #595959;
+    }
 
     table {
         width: 65%
     }
 
-    tr:nth-child(even) {
+    tr:nth-child(odd) {
         background-color: #dddddd;
     }
 
@@ -154,6 +163,7 @@ include("controller/systemController.php");
 
 <br>
 <p class="hello">Hello, <?php echo $user_data->get_UserName(); ?>.<br>
+<p class="hello">Please select a commodity in the list below to view history chart, or use the Create Trade button to create an order ticket.</p>
 <div id="forms">
     <form class="center" method="post" action="">
         <select id="commodity" name="commodity">
@@ -184,6 +194,7 @@ include("controller/systemController.php");
     <!--table of current prices -->
     <div class="bottom" id="tables">
         <table>
+            <caption>Current Commodity Prices</caption>
             <?php
             echo '<th>Symbol</th>
               <th>Commodity Name</th>

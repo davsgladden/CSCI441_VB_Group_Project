@@ -51,7 +51,7 @@ h1 {
   padding: 0 8px;
   overflow: hidden;
   position: -webkit-sticky; /* Safari */
-  position: sticky;
+  position: static;
   top: 0;
   display: flex;
   align-items: flex-start;

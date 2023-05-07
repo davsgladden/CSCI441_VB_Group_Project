@@ -60,10 +60,24 @@
         padding: 0.25em 0.5em;
         font-size: 1.25rem;
     }
+    .submit {
+        background-color: #549bf7; /* Black */
+        border: grey;
+        color: white;
+        padding: 10px 24px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 18px;
+        font-family: Verdana, Arial;
+        cursor: pointer !important;
+    }
+
+    .submit:hover {
+        background-color: #5A5A5A;
+    }
 </style>
 <body>
-    <p>Hello, <?php echo $user_data->get_UserName(); ?>.<br>
-        Please fill out the trade form below to create an order ticket.</p>
+    <p>Please fill out the trade form below to create an order ticket:</p>
     <form class = "center" method="post" action="confirmation.php">
         Select an order type:<br>
         <input type="radio" id="orderType" name="orderType" value="Buy">
@@ -81,7 +95,7 @@
             ?>
         </select><br><br>
         <label for="amount">Amount:  </label>
-        <input type="text" id="amount" name="amount">
+        <input type="number" min="0.0001" step="0.0001" id="amount" name="amount">
         <br><br>
         <input class="submit" type="submit" name="submit" value="Preview Order">
     </form>

@@ -99,6 +99,23 @@ function insertTraineeManagement($con, TraineeManagement $traineeManagement ){
     }
 }
 
+function getTraineeIds($con, $managerID) {
+    $id = "";
+    $traineeManagementData = fetchTraineeManagement($con, "ManagerUserID = $managerID");
+
+    if (is_array($traineeManagementData)) {
+        foreach (array_filter($traineeManagementData) as $trainee) {
+            if($id == "") {
+                $id .= $trainee->get_TraineeUserID();
+            } else {
+                $id .= ",".$trainee->get_TraineeUserID();
+            }
+        }
+    } else {
+        $id = $traineeManagementData->get_TraineeUserID();
+    }
+    return $id;
+}
 
 /**
  * @param array $res

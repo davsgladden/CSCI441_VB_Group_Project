@@ -11,20 +11,7 @@
         if($user_data->get_UserTypeID() == 1) {
          $newsFeed = getNewsFeedHistory($con, $user_data->get_ID());
      } else if($user_data->get_UserTypeID() == 2) {
-         $traineeManagementData = fetchTraineeManagement($con, "ManagerUserID = $user_data->ID");
-
-         if (is_array($traineeManagementData)) {
-             foreach (array_filter($traineeManagementData) as $trainee) {
-                 if($id == "") {
-                     $id .= $trainee->get_TraineeUserID();
-                 } else {
-                     $id .= ",".$trainee->get_TraineeUserID();
-                 }
-             }
-         } else {
-             $id = $traineeManagementData->get_TraineeUserID();
-         }
-         $newsFeed = getNewsFeedHistory($con, $id);
+         $newsFeed = getNewsFeedHistory($con, getTraineeIds($con, $user_data->get_ID()));
       }
     }
 ?>
@@ -146,7 +133,6 @@
     </form>
     </table>
     </div>
-    <!--TODO: adjust iframe to display to the right of history table-->
     <div class="top-right">
         <iframe style="width:100%;max-width:inherit;height:100%;max-height:inherit;" class="center" name="myiFrame" id="myiFrame" ></iframe>
     </div>
