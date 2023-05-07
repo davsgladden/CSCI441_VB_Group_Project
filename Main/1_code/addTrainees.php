@@ -30,7 +30,12 @@
         text-align: center;
         text-decoration: none;
         font-size: 18px;
+        cursor: pointer !important;
     }
+    .submit:hover {
+        background-color: #5A5A5A;
+    }
+
 
     select {
         width: 75%;

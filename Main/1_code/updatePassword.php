@@ -36,15 +36,19 @@
         }
 
         #button{
-        background-color: #549bf7; /* Black */
-        border: grey;
-        color: white;
-        padding: 10px 24px;
-        text-align: center;
-        text-decoration: none;
-        font-size: 15px;
+            background-color: #549bf7; /* Aqua */
+            border: grey;
+            color: white;
+            padding: 10px 24px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 0.25em;
+            cursor: pointer !important;
     }
-
+        #button:hover {
+            background-color: #5A5A5A;
+        }
         .header{
             background-color: #549bf7;
             margin: auto;
@@ -61,6 +65,7 @@
             text-align: center;
             border: solid thin #aaa;
         }
+
     </style>
     <div id="box">
         <form method="post">

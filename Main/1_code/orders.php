@@ -112,6 +112,7 @@ include("controller/systemController.php");
         font-size: 18px;
         font-family: Verdana, Arial;
         cursor: pointer !important;
+        border-radius: 0.25em;
     }
 
     .submit:hover {
@@ -128,6 +129,7 @@ include("controller/systemController.php");
         font-size: 18px;
         margin-left: 400px;
         font-family: Verdana, Arial;
+        border-radius: 0.25em;
     }
 
     .button a {
@@ -189,7 +191,7 @@ include("controller/systemController.php");
         <div id="chartContainer" style="width:100%;max-width:inherit;height:500px"></div>
     </div>
     <div class="top-right">
-        <iframe style="width:100%;max-width:700px" height="600px" class="center" name="myiFrame" id="myiFrame"></iframe>
+        <iframe style="width:95%;max-width:700px" height="600px" class="center" name="myiFrame" id="myiFrame"></iframe>
     </div>
     <!--table of current prices -->
     <div class="bottom" id="tables">

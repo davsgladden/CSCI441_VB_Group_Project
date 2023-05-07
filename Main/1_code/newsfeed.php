@@ -55,6 +55,7 @@
         font-size: 14px;
         font-family: Verdana, Arial;
         cursor: pointer !important;
+        border-radius: 0.25em;
     }
 
     .submit:hover {
@@ -70,6 +71,7 @@
         text-decoration: none;
         font-size: 18px;
         margin-left: 400px;
+        cursor: pointer !important;
         font-family: Verdana, Arial;
     }
 
@@ -134,7 +136,7 @@
     </table>
     </div>
     <div class="top-right">
-        <iframe style="width:100%;max-width:inherit;height:100%;max-height:inherit;" class="center" name="myiFrame" id="myiFrame" ></iframe>
+        <iframe style="width:100%;max-width:inherit;height:100%;min-height:500px;max-height:inherit;" class="center" name="myiFrame" id="myiFrame" ></iframe>
     </div>
     </div>
 </body>

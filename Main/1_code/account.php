@@ -64,6 +64,8 @@
         font-size: 18px;
         margin-left: 15px;
         font-family: Verdana, Arial;
+        cursor: pointer !important;
+        border-radius: 0.25em;
     }
     .button a {
         color: white;
@@ -114,7 +116,7 @@
         <form method="update">
             <button class="button"><a href="updatePassword.php" target="myiFrame">Change Password</a></button>
         </form>
-        <iframe width="700" height ="315" class="center" name="myiFrame" id="myiFrame" ></iframe>
+        <iframe width="700" height ="350" class="center" name="myiFrame" id="myiFrame" ></iframe>
         <div id="manager">
         <form method="update">
         <button class="button"><a href="addTrainees.php" target="myManageriFrame">Add Trainees</a></button>

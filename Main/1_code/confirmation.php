@@ -68,8 +68,13 @@
         font-size: 18px;
         font-family: Verdana, Arial;
         cursor: pointer !important;
+        border-radius: 0.25em;
     }
-
+    .center {
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 20px;
+    }
     .submit:hover {
         background-color: #5A5A5A;
     }

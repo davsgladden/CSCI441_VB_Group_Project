@@ -14,7 +14,7 @@
             $id = getTraineeIds($con, $user_data->get_ID());
     }
 
-    updateAllPrices($con,$endpoint,$access_key);
+    //updateAllPrices($con,$endpoint,$access_key);
 
 ?>
 <!DOCTYPE html>
@@ -98,7 +98,11 @@
         </div>
     <?php } ?>
     <!--Display for manager users-->
-    <?php if($user_data->get_UserTypeID() == 2) { ?>
+    <?php if($user_data->get_UserTypeID() == 2) {
+            if($id == 0) {
+                echo '<p>You are not currently managing any trainee accounts.<br>
+                        Please use the Account page to select trainee accounts to manage.</p>';
+            } else {?>
         <p><b>Current portfolio information for your managed trainee accounts:</b></p>
         <hr>
         <div>
@@ -142,7 +146,7 @@
                 ?>
             </p> <hr>
         </div>
-    <?php } ?>
+    <?php }} ?>
     <?php } ?>
 </body>
 </html>
