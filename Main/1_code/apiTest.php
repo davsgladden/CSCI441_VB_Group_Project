@@ -33,7 +33,7 @@
     echo($convertedPrice);
 
     //Update price
-    $newCommodity = updateCommodityPrice($con, $symbol,$endpoint,$access_key);
+    $newCommodity = updateCommodityPrice($con, $symbol);
 
     //Display current data
     echo('<br><br>Before the update, the Price of '.$symbol.' in the Database is: $');

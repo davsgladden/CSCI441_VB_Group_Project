@@ -4,7 +4,6 @@
     include("connection.php");
     include("functions.php");
     include("controller/systemController.php");
-    include("commoditiesAPI.php");
 
     if(isset($_SESSION['user_id'])) {
         $user_data = fetchUser($con, "UserID = $_SESSION[user_id]");
@@ -24,7 +23,7 @@
         $orderType = $_POST['orderType'];
     }
     //update commodity price before order
-    updateCommodityPrice($con, $commodity->get_Symbol(),$endpoint,$access_key);
+    updateCommodityPrice($con, $commodity->get_Symbol());
 
     $Price = $commodity->get_CurrentPrice();
     $Total = $Price*$Amount;
